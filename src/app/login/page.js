@@ -7,15 +7,12 @@ import axios from 'axios';
 const Login = ()=>{
 
     const handleLoginSuccess = async(response)=>{
-        const {token} = response;
+        
+        const token = response.credential;
 
-        const config = {
-            headers: {
-                'Access-Control-Allow-Credentials':true
-            }
-        }
+        console.log(response);
         try{
-            const res = await axios.post('http://localhost:8080/api/auth/google', config,{token});
+            const res = await axios.post('http://localhost:8080/api/auth/google', {tokenId: token});
             console.log(res.data);
         }
         catch(error){
@@ -24,7 +21,7 @@ const Login = ()=>{
     }
     return (
         <>
-        <GoogleOAuthProvider clientId="354510351402-fknqjvgdjvojrageqlgeaehqh574kt08.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="976168075960-icen3ef92hdfkq7ca4mkaqdo29gfstk7.apps.googleusercontent.com">
             <main className="bg-[url('/login_bg.jpg')] bg-center bg-cover w-full h-screen flex justify-center items-center flex-col">
                 <div className="w-72 flex flex-col">
                     <form className="flex flex-col [&>input]:px-4 [&>input]:py-2 [&>input]:mb-3 [&>input]:text-black">
@@ -34,7 +31,7 @@ const Login = ()=>{
                         <GoogleLogin
                         onSuccess={handleLoginSuccess}
                         onError={() => { console.log('Login Failed'); }}
-                        />;
+                        />
                     </form>
                     <span className="ml-auto text-white">New User? <Link className=" underline" href="/signup"> Signup</Link></span>
 
