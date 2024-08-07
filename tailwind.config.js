@@ -8,9 +8,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'navy-blue': '#2D2538'
+        'navy-blue': 'rgba(45,37,56, 1)',
+        'navy-blue-200': 'rgba(45,37,56, 0.2)',
+        'navy-blue-500': 'rgba(45,37,56, 0.5)',
+        'navy-blue-700': 'rgba(45,37,56, 0.7)',
+        'navy-blue-900': 'rgba(45,37,56, 0.9)',
       }
     },
+    fontFamily: {
+      'roboto': ["Roboto", "sans-serif"],
+      'fira': ["Fira Code", "monospace"]
+    }
   },
   plugins: [],
 };

@@ -1,18 +1,55 @@
+"use client"
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import Link from "next/link";
+import axios from "axios";
+import { useState } from "react";
+
 
 const Signup = ()=>{
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    
+    const handleChangeEmail = (event) =>{
+        setEmail(event.target.value);
+    }
+    const handleChangePassword = (event) =>{
+        setPassword(event.target.value);
+    }
+
+
+    const handleSignup = async(response)=>{
+        const token = response.credential;
+        
+        try {
+            const res = await axios.post('http://localhost:8080/api/auth/google', {tokenId: token});
+            console.log(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
+        <GoogleOAuthProvider clientId={process.env.CLIENT_ID}>
         <main className="bg-[url('/login_bg.jpg')] bg-center bg-cover w-full h-screen flex justify-center items-center flex-col">
-            <div className="w-72 flex flex-col">
-                <form className="flex flex-col [&>input]:px-4 [&>input]:py-2 [&>input]:mb-3 [&>input]:text-black">
-                    <input type="username" placeholder="Username"/>
-                    <input type="email" placeholder="Email"/>
-                    <input type="password" placeholder="Password" />
-                    <button className="w-fit bg-navy-blue px-6 py-2 text-white rounded-2xl">Signup</button>
+            <div className="formContainer">
+                <h1 className="form-heading">Signup</h1>
+                <form className="formBox">
+                    <input onChange={handleChangeEmail} type="username" placeholder="Username"/>
+                    <input onChange={handleChangePassword} type="email" placeholder="Email"/>
+                    <input type="password" placeholder="Password"/>
+                    <button>Signup</button>
+                    <span>
+                        <GoogleLogin
+                        onSuccess={handleSignup}
+                        onError={()=>{console.log("Signup failed")}}
+                        />
+                    </span>
                 </form>
                 <span className="ml-auto text-white">Existing User? <Link className=" underline" href="/login"> login</Link></span>
             </div>
         </main>
+        </GoogleOAuthProvider>
     );
 }
 

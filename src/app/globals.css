@@ -3,7 +3,28 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 body{
   font-family: "Poppins", sans-serif;
+}
+
+.formContainer{
+  @apply font-fira w-[500px] flex flex-col p-4 rounded-3xl bg-slate-800/50 p-8;
+}
+
+.formBox{
+  @apply flex flex-col my-4;
+}
+
+.form-heading{
+  @apply text-white text-2xl mb-2;
+}
+.formBox input{
+  @apply  px-4 py-2 mb-3 text-white bg-navy-blue-700 rounded-md focus:border-0 focus:outline-0 focus:ring-0;
+}
+
+.formBox button{
+  @apply w-fit bg-navy-blue px-6 py-2  text-white rounded-md;
 }
