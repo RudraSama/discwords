@@ -22,7 +22,7 @@ const Signup = ()=>{
         const token = response.credential;
         
         try {
-            const res = await axios.post('http://localhost:8080/api/auth/google', {tokenId: token});
+            const res = await axios.post('http://localhost:8080/api/loginUserWithGoogle', {tokenId: token});
             console.log(res.data);
         } catch (error) {
             console.log(error);

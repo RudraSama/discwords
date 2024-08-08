@@ -50,7 +50,7 @@ const Login = ()=>{
     }
     return (
         <>
-        <GoogleOAuthProvider clientId={process.env.CLIENT_ID}>
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_CLIENT_ID}>
             <main className="bg-[url('/login_bg.jpg')] bg-center bg-cover w-full h-screen flex justify-center items-center flex-col">
                 <div className="formContainer">
                     <h1 className="form-heading">Login</h1>
