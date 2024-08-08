@@ -13,6 +13,7 @@
     "axios": "^1.7.3",
     "babel-preset-es2015": "^6.24.1",
     "bcryptjs": "^2.4.3",
+    "cookies-js": "^1.2.3",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18"

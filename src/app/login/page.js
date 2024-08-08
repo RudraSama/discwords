@@ -8,8 +8,6 @@ import axios from 'axios';
 
 const Login = ()=>{
     
-
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     
@@ -27,7 +25,7 @@ const Login = ()=>{
                 email: email, 
                 password: password
             }
-            const response = await axios.post('http://localhost:8080/api/user/login', credentials);
+            const response = await axios.post('http://localhost:8080/api/registerUser', credentials);
             console.log(response.data);
         } catch (error) {
             console.log(error);
@@ -41,7 +39,7 @@ const Login = ()=>{
 
         console.log(response);
         try{
-            const res = await axios.post('http://localhost:8080/api/auth/google', {tokenId: token});
+            const res = await axios.post('http://localhost:8080/api/loginUserWithGoogle', {tokenId: token});
             console.log(res.data);
         }
         catch(error){

@@ -8,6 +8,7 @@ import { useState } from "react";
 const Signup = ()=>{
 
     const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     
     const handleChangeEmail = (event) =>{
@@ -17,24 +18,52 @@ const Signup = ()=>{
         setPassword(event.target.value);
     }
 
+    const handleChangeUsername = (event)=>{
+        setUsername(event.target.value);
+    }
 
-    const handleSignup = async(response)=>{
+
+    const handleGoogleSignup = async(response)=>{
         const token = response.credential;
         
         try {
-            const res = await axios.post('http://localhost:8080/api/loginUserWithGoogle', {tokenId: token});
+            const res = await axios.post('http://localhost:8080/api/signupUserWithGoogle', {tokenId: token});
             console.log(res.data);
         } catch (error) {
             console.log(error);
         }
     }
 
+
+    const handleSignup = async(event)=>{
+        event.preventDefault();
+        try{
+            const credentials = {
+                username: username,
+                email: email,
+                password: password
+            };
+
+
+            const response = await axios.post("http://localhost:8080/api/registerUser", credentials);
+            
+            if(response.data){
+                console.log(response.data);
+            }
+
+        }
+        catch(error){
+            console.log(error);
+        }
+
+    }
+
     return (
-        <GoogleOAuthProvider clientId={process.env.CLIENT_ID}>
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_CLIENT_ID}>
         <main className="bg-[url('/login_bg.jpg')] bg-center bg-cover w-full h-screen flex justify-center items-center flex-col">
             <div className="formContainer">
                 <h1 className="form-heading">Signup</h1>
-                <form className="formBox">
+                <form className="formBox" onSubmit={handleSignup}>
                     <input onChange={handleChangeEmail} type="username" placeholder="Username"/>
                     <input onChange={handleChangePassword} type="email" placeholder="Email"/>
                     <input type="password" placeholder="Password"/>
