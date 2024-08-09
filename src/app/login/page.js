@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import {signIn} from 'next-auth/react';
 import axios from 'axios';
 
 
@@ -20,16 +21,13 @@ const Login = ()=>{
 
     const handleLogin = async(event) => {
         event.preventDefault();
-        try {
-            const credentials = {
-                email: email, 
-                password: password
-            }
-            const response = await axios.post('http://localhost:8080/api/registerUser', credentials);
-            console.log(response.data);
-        } catch (error) {
-            console.log(error);
-        }
+
+
+        const res = await signIn('credentials', {
+            redirect: false,
+            email,
+            password
+        });
 
     }
 
