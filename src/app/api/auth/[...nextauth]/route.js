@@ -1,8 +1,8 @@
-import NextAuth form 'next-auth';
+import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import axios from 'axios';
 
-export default NextAuth({
+const handler = NextAuth({
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -12,11 +12,14 @@ export default NextAuth({
             },
 
             async authorize(credentials){
-                const res = await axios('http://http://localhost:8080/api/loginUser', {
+
+
+                const res = await axios.post('http://localhost:8080/api/loginUser', {
                     email: credentials.email,
                     password: credentials.password
                 });
 
+                
                 if(res.data){
                     return {...res.data.user, token: res.data.userSession.token};
                 }
@@ -29,16 +32,22 @@ export default NextAuth({
     
     callbacks: {
         async jwt({token, user}){
+            
             if(user){
                 token.accessToken = user.token;
+                delete user['token'];
+                token.user = user;
             }
 
             return token;
         },
 
-        async session({session, token}){
-            session.accessToken = token.accessToken;
+        async session({session, token ,user}){
+            session.accessToken = user.token;
+            session.user = user;
             return session;
         }
     }
 });
+
+export {handler as GET, handler as POST};

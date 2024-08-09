@@ -4,13 +4,20 @@ import { useState } from "react";
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import {signIn} from 'next-auth/react';
+import {useSession} from 'next-auth/react';
+import {useRouter} from 'next/navigation';
 import axios from 'axios';
+
+import Test from "./Test";
 
 
 const Login = ()=>{
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+
+    const router = useRouter();
     
     const handleChangeEmail = (event) =>{
         setEmail(event.target.value);
@@ -28,6 +35,11 @@ const Login = ()=>{
             email,
             password
         });
+
+        if(res.ok){
+            router.push('/dashboard');
+        }
+
 
     }
 
