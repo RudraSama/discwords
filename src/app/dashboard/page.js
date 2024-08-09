@@ -9,6 +9,7 @@ const Dashboard = ()=>{
 
     return (
         <div>
+            <h1>I AM DASHBOARD</h1>
         </div>
     );
 }

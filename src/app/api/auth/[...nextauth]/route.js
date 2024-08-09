@@ -38,13 +38,12 @@ const handler = NextAuth({
                 delete user['token'];
                 token.user = user;
             }
-
             return token;
         },
 
         async session({session, token ,user}){
-            session.accessToken = user.token;
-            session.user = user;
+            session.accessToken = token.accessToken;
+            session.user = token.user;
             return session;
         }
     }

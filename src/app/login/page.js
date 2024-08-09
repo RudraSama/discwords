@@ -1,23 +1,32 @@
 "use client"
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import {signIn} from 'next-auth/react';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
 import axios from 'axios';
-
-import Test from "./Test";
+import { RedirectStatusCode } from "next/dist/client/components/redirect-status-code";
 
 
 const Login = ()=>{
+    
+    const {data: session} = useSession();
+    const router = useRouter();
+    
+    useEffect(()=>{
+        if(session)
+        {
+            router.push('/dashboard');
+        }
+    },[])
+
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
 
-    const router = useRouter();
     
     const handleChangeEmail = (event) =>{
         setEmail(event.target.value);
