@@ -1,6 +1,6 @@
 "use client"
 
-import {useSession, SessionProvider} from 'next-auth/react';
+import {useSession, SessionProvider, signOut} from 'next-auth/react';
 
 const Dashboard = ()=>{
     
@@ -10,6 +10,8 @@ const Dashboard = ()=>{
     return (
         <div>
             <h1>I AM DASHBOARD</h1>
+
+            <button onClick={signOut}>Hehe Logout</button>
         </div>
     );
 }

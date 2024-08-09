@@ -15,17 +15,12 @@ const Login = ()=>{
     const {data: session} = useSession();
     const router = useRouter();
     
-    useEffect(()=>{
-        if(session)
-        {
-            router.push('/dashboard');
-        }
-    },[])
-
-    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    if(session){
+        router.push("/dashboard");
+    }
 
     
     const handleChangeEmail = (event) =>{
