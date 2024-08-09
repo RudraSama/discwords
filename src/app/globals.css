@@ -28,3 +28,30 @@ body{
 .formBox button{
   @apply w-fit bg-navy-blue px-6 py-2  text-white rounded-md;
 }
+
+#activeServer{
+  /* @apply absolute bg-white h-2 w-1 rounded-xl left-0 self-center; */
+  transition: all 0.2s ease-in-out;
+  position: absolute;
+  background-color: white;
+  height: 8px;
+  width: 4px;
+  border-radius: 12px;
+  left: 0;
+  align-self: center;
+}
+
+
+
+.serverPicTransition{
+  margin: auto ;
+  border-radius: 100%;
+  transition: all 0.2s ease-in-out;
+}
+#server:hover .serverPicTransition{
+  border-radius: 20%;
+  
+}
+#server:hover #activeServer{
+  height: 20px;
+}
