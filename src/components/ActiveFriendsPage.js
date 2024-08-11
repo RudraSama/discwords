@@ -1,6 +1,6 @@
 import React from "react";
 
-const AcitveFriendsPage = () => {
+const ActiveFriendsPage = () => {
 
     return (
         <div className="w-full">
@@ -59,4 +59,4 @@ const FriendListContainer = () =>{
     )
 }
 
-export default AcitveFriendsPage;
+export default ActiveFriendsPage;
