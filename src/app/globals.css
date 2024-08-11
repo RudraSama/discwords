@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
@@ -29,29 +31,7 @@ body{
   @apply w-fit bg-navy-blue px-6 py-2  text-white rounded-md;
 }
 
-#activeServer{
-  /* @apply absolute bg-white h-2 w-1 rounded-xl left-0 self-center; */
-  transition: all 0.2s ease-in-out;
-  position: absolute;
-  background-color: white;
-  height: 8px;
-  width: 4px;
-  border-radius: 12px;
-  left: 0;
-  align-self: center;
+.serverPicActive{
+  @apply h-2 w-1 bg-white rounded-[30%] transition-all group-hover:h-5
 }
 
-
-
-.serverPicTransition{
-  margin: auto ;
-  border-radius: 100%;
-  transition: all 0.2s ease-in-out;
-}
-#server:hover .serverPicTransition{
-  border-radius: 20%;
-  
-}
-#server:hover #activeServer{
-  height: 20px;
-}

@@ -1,6 +1,7 @@
 "use client"
 
 import ServerList from '@/components/ServerList';
+import FriendsList from "@/components/FriendList"
 import {useSession, SessionProvider, signOut} from 'next-auth/react';
 
 const Dashboard = ()=>{
@@ -9,10 +10,11 @@ const Dashboard = ()=>{
     // console.log(session);
 
     return (
-        <div>
+        <main className='flex'>
             <ServerList/>
+            <FriendsList/>
             <button onClick={signOut}>Hehe Logout</button>
-        </div>
+        </main>
     );
 }
 
