@@ -15,7 +15,7 @@ const Dashboard = ()=>{
         <main className='flex'>
             <ServerList/>
             <FriendsList/>
-            <ActiveFriendsPage/>:
+            <ActiveFriendsPage/>
         </main>
     );
 }

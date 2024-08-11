@@ -1,6 +1,7 @@
 
 import React from "react";
 import Link from 'next/link';
+import UserIcon from "@/components/UserIcon";
 
 const FriendsList = (props) =>{
     
@@ -17,6 +18,15 @@ const FriendsList = (props) =>{
                 </li>
                 <li>
                     <Shop active={props.active === 'shop'}/>
+                </li>
+            </ul>
+
+            <ul className="[&>li]:w-[248px] [&>li]:my-[2px]">
+                <li>
+                    <UserIcon username="Cattttt" icon_url={"/icon-cat.png"} online={true}/>
+                </li>
+                <li>
+                    <UserIcon username="IamBatman" icon_url={"/batman.jpeg"} online={true}/>
                 </li>
             </ul>
         </div>
