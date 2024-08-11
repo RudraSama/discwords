@@ -60,6 +60,7 @@ const Login = ()=>{
             console.log(error);
         }
     }
+    
     return (
         <>
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_CLIENT_ID}>

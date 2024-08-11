@@ -31,7 +31,4 @@ body{
   @apply w-fit bg-navy-blue px-6 py-2  text-white rounded-md;
 }
 
-.serverPicActive{
-  @apply h-2 w-1 bg-white rounded-[30%] transition-all group-hover:h-5
-}
 

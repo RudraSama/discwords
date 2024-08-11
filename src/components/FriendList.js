@@ -3,11 +3,20 @@ import React from "react";
 const FriendsList = () =>{
 
     return(
-        <div className="h-screen w-[250px] bg-[#2b2d31]">
+        <div className="h-screen w-[250px] bg-gray-bg">
             <SearchBar/>
-            <Friends/>
-            <Nitro/>
-            <Shop/>
+
+            <ul className="[&>li]:w-[248px]">
+                <li>
+                    <Friends active={true}/>
+                </li>
+                <li>
+                    <Nitro active={false}/>
+                </li>
+                <li>
+                    <Shop active={false}/>
+                </li>
+            </ul>
         </div>
     )
 
@@ -21,24 +30,24 @@ const SearchBar = () =>{
     )
 }
 
-const Friends = () => {
+const Friends = (props) => {
     return (
-        <div className="p-3 w-auto">
-            <div className="w-auto h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#404249] text-[#dbdee1]"> <i className=" mx-3 fas fa-users text-xl mr-2 text-[#dbdee1]"/> Friends</div>
+        <div className="px-2 py-0.5 w-auto">
+            <div className="w-auto h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#404249] text-light-gray-bg"> <i className=" mx-3 fas fa-users text-xl  w-10"/> Friends</div>
         </div>
     )
 }
-const Nitro = () => {
+const Nitro = (props) => {
     return (
-        <div className="p-3 w-auto">
-            <div className="w-auto h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#404249] text-[#dbdee1]"> <i className=" mx-3 fas fa-car text-xl mr-2 text-[#dbdee1]"/> Nitro</div>
+        <div className="px-2 py-0.5 w-auto">
+            <div className="w-auto h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#404249] text-light-gray-bg"> <i className=" mx-3 fas fa-car text-xl w-10 text-[22px]"/> Nitro</div>
         </div>
     )
 }
-const Shop = () => {
+const Shop = (props) => {
     return (
-        <div className="p-3 w-auto">
-            <div className="w-auto h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#404249] text-[#dbdee1]"> <i className=" mx-3 fas fa-shop text-xl mr-2 text-[#dbdee1]"/> Shop</div>
+        <div className="px-2 py-0.5 w-auto">
+            <div className="w-auto h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#404249] text-light-gray-bg"> <i className=" mx-3 fas fa-shop text-xl  w-10"/> Shop</div>
         </div>
     )
 }
