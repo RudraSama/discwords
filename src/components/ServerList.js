@@ -5,7 +5,7 @@ const ServerList = () =>{
     return(
         <div className="w-16 h-screen bg-[#1e1f22] flex flex-col">
             
-            <ServerPic active={true}/>
+           <ServerPic active={true}/>
             <ServerPic active ={false}/>
             <ServerPic active ={false}/>
             <ServerPic active ={false}/>
