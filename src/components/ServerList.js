@@ -3,14 +3,14 @@ import ServerPic from "./ServerPic";
 
 const ServerList = () =>{
     return(
-        <div className="w-16 h-screen bg-[#1e1f22] flex flex-col">
+        <div className="w-18 h-screen bg-[#1e1f22] flex flex-col px-3">
             
            <ServerPic active={true}/>
             <ServerPic active ={false}/>
             <ServerPic active ={false}/>
             <ServerPic active ={false}/>
             <ServerPic active ={true}/>
-            <hr className="border-light-gray-bg border-[2px] w-[32px] mx-auto rounded-md"/>
+            <hr className="border-gray-bg-800 border-[1px] w-[32px] mx-auto rounded-md"/>
             <AddNewServer/>
             
         </div>

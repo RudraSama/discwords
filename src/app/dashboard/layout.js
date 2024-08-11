@@ -1,13 +1,16 @@
 "use client"
 import {SessionProvider} from 'next-auth/react';
+import StoreProvider from './StoreProvider';
 
 const Layout = ({children})=>{
 
-    console.log("from alyouttttt");
+    
     return (
         <>
             <SessionProvider>
+                <StoreProvider>
                 {children}
+                </StoreProvider>
             </SessionProvider>
         </>
     );
