@@ -9,7 +9,7 @@ const FriendsList = (props) =>{
         <div className="h-screen w-[250px] bg-gray-bg-800">
             <SearchBar/>
 
-            <ul className="[&>li]:w-[248px] [&>li]:my-[2px]">
+            <ul className="[&>li]:w-[236px] [&>li]:my-[2px] [&>li]:mx-[6px]">
                 <li>
                     <Friends active={props.active?false:true}/>
                 </li>
@@ -21,7 +21,12 @@ const FriendsList = (props) =>{
                 </li>
             </ul>
 
-            <ul className="[&>li]:w-[248px] [&>li]:my-[2px]">
+            <div className="w-full py-2 px-6 text-gray-bg-500 flex justify-between">
+                <span>Direct Messages</span>
+                <button><i className="fas fa-plus text-md"/></button>
+            </div>
+
+            <ul className="[&>li]:w-[236px] [&>li]:my-[2px] [&>li]:mx-[6px]">
                 <li>
                     <UserIcon username="Cattttt" icon_url={"/icon-cat.png"} online={true}/>
                 </li>
