@@ -8,7 +8,7 @@ const Channel = ({params})=>{
 
     return (
         <>
-        <ActiveFriendsPage/>
+            <ActiveFriendsPage/>
         </>
     );
 }
