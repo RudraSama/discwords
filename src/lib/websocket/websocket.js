@@ -1,5 +1,5 @@
 import { Client } from '@stomp/stompjs';
-
+import * as SockJS from 'sockjs-client';
 
 export const stompInit = (url, token, topic)=>{
     console.log(url);
@@ -10,8 +10,14 @@ export const stompInit = (url, token, topic)=>{
         }
     });
 
+    stompClient.webSocketFactory = ()=>{
+        return new SockJS(url);
+    }
+
     console.log("Activating Stomp client");
     stompClient.activate();
+
+    console.log("hu");
 
     stompClient.onConnect = ()=>{
         console.log("Successfully connected to Stomp Client");
@@ -26,6 +32,7 @@ export const stompInit = (url, token, topic)=>{
 
 }
 export const sendMessage = (stompClient, destination , message) => {
+    console.log(message);
     stompClient.publish({
         destination: "/app/topic/"+ destination, 
         body: JSON.stringify(message),
