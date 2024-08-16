@@ -1,5 +1,6 @@
 import React from "react";
 
+import ChatComponent from "@/components/ChatComponent"
 import { stompInit, sendMessage } from '@/lib/websocket/websocket';
 
 const ActiveFriendsPage = () => {
@@ -61,14 +62,17 @@ const NavBar = () =>{
 const FriendListContainer = () =>{
     return (
         <div className="bg-gray-bg-700 h-[calc(100vh-56px)] flex">
-            <div className="w-full border-r-[1px] border-gray-bg-600 h-full py-4 px-6 flex flex-col gap-6">
-                <div className="relative h-auto flex bg-gray-bg-900 items-center text-sm rounded-md">
+            <div className="w-full border-r-[1px] border-gray-bg-600 py-4 px-6 flex flex-col gap-6">
+                <div className="relative flex bg-gray-bg-900 items-center text-sm rounded-md">
                     <input className="p-2 w-full bg-transparent outline-none" placeholder="Search"/>
                     <i className="absolute right-2 fas fa-search text-xl text-gray-bg-500"/>
                 </div>
                 <div>
                     <span className="text-sm text-gray-bg-500">Online - 1</span>
                     <hr className="border-[1px] border-gray-bg-600 my-4"/>
+                </div>
+                <div className="h-[100%]"> 
+                    <ChatComponent/>
                 </div>
             </div>
             <div className="w-[500px] py-6 px-4 flex flex-col gap-8">

@@ -24,10 +24,10 @@ export const stompInit = (url, token, topic)=>{
         stompClient.subscribe('/topic/'+topic, (message)=>{
             console.log("new message received", message.body)
             
+            
         });
     }
 
-    //send message banana hai stomp client ka object jayega aur string mai message
     return stompClient;
 
 }
