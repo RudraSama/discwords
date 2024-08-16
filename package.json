@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.7",
+    "@stomp/stompjs": "^7.0.0",
     "axios": "^1.7.3",
     "babel-preset-es2015": "^6.24.1",
     "bcryptjs": "^2.4.3",
