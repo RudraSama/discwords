@@ -1,37 +1,16 @@
 import React from "react";
 
 import ChatComponent from "@/components/ChatComponent"
-import { stompInit, sendMessage } from '@/lib/websocket/websocket';
+
 
 const ActiveFriendsPage = () => {
 
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjU4NjMxMDA3NDEzOCIsImVtYWlsIjoibHVja3kyQGx1Y2t5LmNvbSIsInN1YiI6ImdhdXJhdiIsImlhdCI6MTcyMzU4NjMxMSwiZXhwIjoxNzMxMzYyMzExfQ.LUboJiBNmXmdVCaCjuBXjchyFSzkkEdnfOOUyFU7ltI"
     
-
-    const stompClient = stompInit("http://localhost:8080/ws", token, `conversation/1`); 
-
-    const send = ()=>{
-        const text = document.getElementById("text").value;
-        console.log(text);
-
-        const message = {
-            profile_id: 1,
-            conversation_id: 1,
-            message: text
-        };
-
-        sendMessage(stompClient, "/conversation/1", message);
-    }
-
 
     return (
         <div className="w-full">
             <NavBar/>
             <FriendListContainer/>
-
-            <input type="text" id="text" placeholder="send message"/>
-
-            <button onClick={send}>Send</button>
         </div>
     )
 }

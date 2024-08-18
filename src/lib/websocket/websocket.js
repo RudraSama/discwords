@@ -1,40 +1,76 @@
 import { Client } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 
-export const stompInit = (url, token, topic)=>{
-    console.log(url);
-    const stompClient = new Client({
-        brokerURL: url,
-        connectHeaders:{
-            access_token : token,
+import {receiveDirectMessage} from '../features/directMessageSlice';
+
+
+
+class StompClientSingleton{
+
+    constructor(url, token){
+
+        this.dipatch = null;
+
+        if(!StompClientSingleton.instance && typeof window !== 'undefined'){
+
+            this.client = new Client({
+                brokerURL: url,
+                connectHeaders: {
+                    access_token: token,
+                }
+            });
+
+            this.client.webSocketFactory = ()=>{
+                return new SockJS(url);
+            }
+
+            console.log("Activating Stomp Client");
+            this.client.activate();
+            
+            this.client.onConnect = ()=>{
+                console.log("Connected to Stomp Client");
+
+                this.client.subscribe('/queue/conversation', (message)=>{
+                    this.dispatch(receiveDirectMessage(JSON.parse(message.body)));
+                });
+
+            }
+
+            StompClientSingleton.instance = this;
         }
-    });
 
-    stompClient.webSocketFactory = ()=>{
-        return new SockJS(url);
+
+        return StompClientSingleton.instance;
+
     }
 
-    console.log("Activating Stomp client");
-    stompClient.activate();
+    getClient(){
+        return this.client;
+    }
 
-    console.log("hu");
+    setDispatch(dispatch){
+        this.dispatch = dispatch;
+    }
 
-    stompClient.onConnect = ()=>{
-        console.log("Successfully connected to Stomp Client");
-        stompClient.subscribe('/topic/'+topic, (message)=>{
-            console.log("new message received", message.body)
-            
-            
+
+    sendMessage(topic, message){
+
+        console.log(message);
+        this.client.publish({
+            destination: "/app/queue/conversation", 
+            body: JSON.stringify(message),
         });
+
     }
 
-    return stompClient;
+}
 
-}
-export const sendMessage = (stompClient, destination , message) => {
-    console.log(message);
-    stompClient.publish({
-        destination: "/app/topic/"+ destination, 
-        body: JSON.stringify(message),
-    });
-}
+const token = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjU4NjMxMDA3NDEzOCIsImVtYWlsIjoibHVja3kyQGx1Y2t5LmNvbSIsInN1YiI6ImdhdXJhdiIsImlhdCI6MTcyMzU4NjMxMSwiZXhwIjoxNzMxMzYyMzExfQ.LUboJiBNmXmdVCaCjuBXjchyFSzkkEdnfOOUyFU7ltI"
+const url = "http://localhost:8080/ws";
+
+
+const instance = new StompClientSingleton(url, token);
+//Object.freeze(instance);
+
+export default instance;
+

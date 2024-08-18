@@ -4,6 +4,7 @@ import Link from "next/link";
 
 
 const ChannelList = ()=>{
+
     return (
         <div id="hello" className="min-w-[248px] bg-gray-bg-800 flex flex-col">
             <div className=" text-white border-b-2 border-b-gray-bg-900 h-14 p-4 text-base flex justify-between hover:bg-gray-bg-600 transition-all">

@@ -1,5 +1,7 @@
 "use client"
 import {SessionProvider} from 'next-auth/react';
+import StoreProvider from './StoreProvider';
+
 
 const Layout = ({children})=>{
 
@@ -7,7 +9,9 @@ const Layout = ({children})=>{
     return (
         <>
             <SessionProvider>
-                {children}
+                <StoreProvider>
+                    {children}
+                </StoreProvider>
             </SessionProvider>
         </>
     );
