@@ -5,11 +5,13 @@ const ServerList = () =>{
     return(
         <div className="w-18 h-screen bg-[#1e1f22] flex flex-col px-3">
             
-           <ServerPic active={true}/>
+            <ServerPic active={true} type="dm"/>
+            <hr className="border-gray-bg-800 border-[1px] w-[32px] mx-auto rounded-md"/>
+            <ServerPic active={false}/>
             <ServerPic active ={false}/>
             <ServerPic active ={false}/>
             <ServerPic active ={false}/>
-            <ServerPic active ={true}/>
+            <ServerPic active ={false}/>
             <hr className="border-gray-bg-800 border-[1px] w-[32px] mx-auto rounded-md"/>
             <AddNewServer/>
             

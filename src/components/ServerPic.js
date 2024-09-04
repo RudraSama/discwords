@@ -9,7 +9,7 @@ const ServerPic = (props) => {
             <span id="activeServer" className={props.active?activeClass:""}></span>
 
             <div className=" w-full hover:transition-all">
-                <Image src={'/discord_server.webp'} className="rounded-[100%] mx-auto transition-all group-hover:rounded-[30%] hover:cursor-pointer" width={48} height={48} alt="server pic" />
+                <Image src={props.type==='dm'?'/dm.jpg':'/discord_server.webp'} className={"rounded-[100%] mx-auto transition-all group-hover:rounded-[30%] hover:cursor-pointer"} width={48} height={48} alt="server pic" />
             </div>
         </div>
     )

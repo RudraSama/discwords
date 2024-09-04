@@ -51,7 +51,7 @@ const SearchBar = () =>{
 const Friends = (props) => {
     
     return (
-        <Link href="/dashboard">
+        <Link href="/channels/me">
             <div className={"w-auto h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#36373D] hover:text-white " + (props.active?"text-white bg-gray-bg-600":"text-gray-bg-500")}> <i className=" mx-3 fas fa-users text-xl w-10"/> Friends</div>
         </Link>
     )
@@ -59,7 +59,7 @@ const Friends = (props) => {
 const Nitro = (props) => {
     
     return (
-        <Link href="/dashboard/nitro">
+        <Link href="/nitro">
             <div className={"w-auto h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#36373D] hover:text-white " + (props.active?"text-white bg-gray-bg-600":"text-gray-bg-500")}> <i className=" mx-3 fas fa-car text-xl w-10 text-[22px]"/> Nitro</div>
         </Link>
     )
@@ -67,7 +67,7 @@ const Nitro = (props) => {
 const Shop = (props) => {
 
     return (
-        <Link href="/dashboard/shop">
+        <Link href="/shop">
             <div className={"w-auto h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#36373D] hover:text-white " + (props.active?"text-white bg-gray-bg-600":"text-gray-bg-500")}> <i className=" mx-3 fas fa-shop text-xl  w-10"/> Shop</div>
         </Link>
     )

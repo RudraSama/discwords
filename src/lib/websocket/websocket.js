@@ -7,6 +7,8 @@ import {receiveDirectMessage} from '../features/directMessageSlice';
 
 class StompClientSingleton{
 
+    static connected = false;
+
     constructor(url, token){
 
         this.dipatch = null;
@@ -29,16 +31,11 @@ class StompClientSingleton{
             
             this.client.onConnect = ()=>{
                 console.log("Connected to Stomp Client");
-
-                this.client.subscribe('/queue/conversation', (message)=>{
-                    this.dispatch(receiveDirectMessage(JSON.parse(message.body)));
-                });
-
+                this.connected = true;
             }
 
             StompClientSingleton.instance = this;
         }
-
 
         return StompClientSingleton.instance;
 
@@ -57,7 +54,7 @@ class StompClientSingleton{
 
         console.log(message);
         this.client.publish({
-            destination: "/app/queue/conversation", 
+            destination: topic, 
             body: JSON.stringify(message),
         });
 

@@ -1,18 +1,14 @@
-import React from "react";
-
-import ChatComponent from "@/components/ChatComponent"
+"use client"
 
 
-const ActiveFriendsPage = () => {
+const Me = ()=>{
 
-    
-
-    return (
-        <div className="w-full">
-            <NavBar/>
-            <FriendListContainer/>
-        </div>
-    )
+        return (
+            <div className="w-full">
+                <NavBar/>
+                <Activity/>
+            </div>
+        );
 }
 
 const NavBar = () =>{
@@ -38,33 +34,19 @@ const NavBar = () =>{
     )
 }
 
-const FriendListContainer = () =>{
+const Activity = () =>{
     return (
         <div className="bg-gray-bg-700 h-[calc(100vh-56px)] flex">
             <div className="w-full border-r-[1px] border-gray-bg-600 py-4 px-6 flex flex-col gap-6">
-                <div className="relative flex bg-gray-bg-900 items-center text-sm rounded-md">
-                    <input className="p-2 w-full bg-transparent outline-none" placeholder="Search"/>
-                    <i className="absolute right-2 fas fa-search text-xl text-gray-bg-500"/>
-                </div>
-                <div>
-                    <span className="text-sm text-gray-bg-500">Online - 1</span>
-                    <hr className="border-[1px] border-gray-bg-600 my-4"/>
-                </div>
-                <div className="h-[100%]"> 
-                    <ChatComponent/>
-                </div>
             </div>
             <div className="w-[500px] py-6 px-4 flex flex-col gap-8">
-                <span className="text-xl font-bold text-white">ACTIVE NOW</span>
+                <span className="text-xl font-bold text-white">Active Now</span>
                 <div className="flex justify-center">
                     <span className="font-bold text-sm text-white">It's quite for now...</span>
-                    <span>
-
-                    </span>
                 </div>
             </div>
         </div>
     )
 }
 
-export default ActiveFriendsPage;
+export default Me;
