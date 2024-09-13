@@ -44,7 +44,6 @@ const Signup = ()=>{
                 password: password
             };
 
-
             const response = await axios.post("http://localhost:8080/api/registerUser", credentials);
             
             if(response.data){
@@ -64,9 +63,9 @@ const Signup = ()=>{
             <div className="formContainer">
                 <h1 className="form-heading">Signup</h1>
                 <form className="formBox" onSubmit={handleSignup}>
-                    <input onChange={handleChangeEmail} type="username" placeholder="Username"/>
-                    <input onChange={handleChangePassword} type="email" placeholder="Email"/>
-                    <input type="password" placeholder="Password"/>
+                    <input onChange={handleChangeUsername} type="username" placeholder="Username"/>
+                    <input onChange={handleChangeEmail} type="email" placeholder="Email"/>
+                    <input type="password" placeholder="Password" onChange={handleChangePassword}/>
                     <button>Signup</button>
                     <span>
                         <GoogleLogin

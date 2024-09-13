@@ -2,31 +2,53 @@
 
 import Image from "next/image";
 import {useEffect} from 'react';
+import {useSession} from 'next-auth/react';
 
 const Chat = ()=>{
 
+    const session = useSession();
+
+    if(session){
+      console.log(session)
+    }
+    else{
+
+    }
+
+    const addMessageTile = (user, message, date)=>{
+
+    }
 
     useEffect(()=>{
+
         const textField = document.getElementById("text-field");
-        textField.addEventListener("input", (event)=>{
-            console.log(event.target.innerHTML.length);
+        textField.addEventListener("beforeinput", (event)=>{
             if(event.target.innerHTML.length > 0){
                 document.getElementById("text-field-placeholder").style.display = "none";
             }
-            else{
+            if(event.target.innerHTML === "<br>"){
                 document.getElementById("text-field-placeholder").style.display = "block";
+            }
+
+
+            if(event.inputType === "insertParagraph"){
+                event.preventDefault();
+
             }
 
         });
     },[]);
-
 
     return (
         <div className="w-full">
             <NavBar username="Cattt"/>
             <div className="flex flex-col h-[calc(100vh-56px)] bg-gray-bg-700">
 
-                <div className="flex-1">
+                <div className="flex-1 mx-6 flex flex-col justify-end gap-4">
+                    <div className="[&>div]:mt-6" id="chat-field">
+                        <MessageTile icon_url="/icon-cat.png" username="Cattt" date="24/09/2024 21:58" message="hello"/>
+                        <MessageTile icon_url="/batman.jpeg" username="IamBatman" date="24/09/2024 21:58" message="hello"/>
+                    </div>
                 </div>
 
                 <div className="px-6 py-4 m-6 bg-gray-bg-600 rounded-lg">
@@ -60,6 +82,29 @@ const NavBar = (props) =>{
             </div>
         </div>
     )
+}
+
+
+const MessageTile = (props)=>{
+    return (
+        <div className="flex gap-4">
+            <div className="w-11 h-11 rounded-full overflow-hidden">
+                <Image src={props.icon_url} alt="this is cat user" width={100} height={100}/>
+            </div>
+
+            <div className="gap-4">
+                <span className="flex gap-3 text-base items-end text-white font-bold leading-5 mb-1">
+                    {props.username}
+                    <span className="text-gray-bg-500 text-xs font-normal">
+                        {props.date}
+                    </span>
+                </span>
+                <div className="text-sm text-slate-300">
+                    {props.message}
+                </div>
+            </div>
+        </div>
+    );
 }
 
 const UserIcon = (props)=>{

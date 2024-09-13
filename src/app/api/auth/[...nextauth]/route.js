@@ -29,6 +29,10 @@ const handler = NextAuth({
             }
         })
     ],
+
+    jwt:{
+      encryption: false //for disabling encryption/decryption on next-auth
+    },
     
     callbacks: {
         async jwt({token, user}){

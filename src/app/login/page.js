@@ -19,7 +19,7 @@ const Login = ()=>{
     const [password, setPassword] = useState("");
 
     if(session){
-        router.push("/dashboard");
+      console.log(session)
     }
 
     
@@ -41,7 +41,6 @@ const Login = ()=>{
         });
 
         if(res.ok){
-            router.push('/dashboard');
         }
 
 

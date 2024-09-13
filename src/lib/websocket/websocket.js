@@ -62,7 +62,7 @@ class StompClientSingleton{
 
 }
 
-const token = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjU4NjMxMDA3NDEzOCIsImVtYWlsIjoibHVja3kyQGx1Y2t5LmNvbSIsInN1YiI6ImdhdXJhdiIsImlhdCI6MTcyMzU4NjMxMSwiZXhwIjoxNzMxMzYyMzExfQ.LUboJiBNmXmdVCaCjuBXjchyFSzkkEdnfOOUyFU7ltI"
+const token = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjE2NzEwMDk2MzQ0NyIsImVtYWlsIjoiZ21zdGNoc0BnbWFpbC5jb20iLCJzdWIiOiJnYXVyYXYiLCJpYXQiOjE3MjYxNjcxMDIsImV4cCI6MTczMzk0MzEwMn0.N9-gM7-aM-16tw-7rqIkdABWXiCA9UnqP2vWkC5knz0";
 const url = "http://localhost:8080/ws";
 
 
