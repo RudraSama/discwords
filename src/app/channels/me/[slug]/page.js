@@ -1,39 +1,46 @@
 "use client"
 
 import Image from "next/image";
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useSession} from 'next-auth/react';
+import {useRouter} from 'next/navigation';
 
 const Chat = ()=>{
-
+    
     const session = useSession();
+    const router = useRouter();
 
-    if(session){
-      console.log(session)
+    const [messages, setMessage] = useState([]);
+
+
+    if(session.status === "unauthenticated"){
+        router.push("/login");
     }
-    else{
-
-    }
-
+    
     const addMessageTile = (user, message, date)=>{
+        const messageObj = {
+            username : user,
+            date: date,
+            message: message
+        };
 
+        messages.push(messageObj)
+        console.log(messageObj);
+
+        setMessage([...messages]);
     }
+
 
     useEffect(()=>{
 
+
         const textField = document.getElementById("text-field");
         textField.addEventListener("beforeinput", (event)=>{
-            if(event.target.innerHTML.length > 0){
-                document.getElementById("text-field-placeholder").style.display = "none";
-            }
-            if(event.target.innerHTML === "<br>"){
-                document.getElementById("text-field-placeholder").style.display = "block";
-            }
-
 
             if(event.inputType === "insertParagraph"){
                 event.preventDefault();
 
+                addMessageTile("IamBatMann", event.target.innerHTML, "20/09/2024 17:49");
             }
 
         });
@@ -44,16 +51,17 @@ const Chat = ()=>{
             <NavBar username="Cattt"/>
             <div className="flex flex-col h-[calc(100vh-56px)] bg-gray-bg-700">
 
-                <div className="flex-1 mx-6 flex flex-col justify-end gap-4">
-                    <div className="[&>div]:mt-6" id="chat-field">
-                        <MessageTile icon_url="/icon-cat.png" username="Cattt" date="24/09/2024 21:58" message="hello"/>
-                        <MessageTile icon_url="/batman.jpeg" username="IamBatman" date="24/09/2024 21:58" message="hello"/>
-                    </div>
+                <div className="flex-1 mx-6 flex flex-col justify-end gap-4 overflow-auto">
+                    <div className="[&>div]:mt-6 max-h-full" id="chat-field">
+                        {messages.map((message, index)=>{
+                            return (<MessageTile icon_url="/icon-cat.png" username={message.username} date={message.date} message={message.message} key={index}/>)
+                        })}
+                   </div>
                 </div>
 
                 <div className="px-6 py-4 m-6 bg-gray-bg-600 rounded-lg">
                     <div className="relative z-0">
-                        <div className="absolute text-gray-bg-500 -z-[1]" id="text-field-placeholder">Message @Cattt</div>
+                        {/*<div className="absolute text-gray-bg-500 -z-[1]" id="text-field-placeholder">Message @Cattt</div>*/}
                         <div id="text-field" contentEditable="true" className="text-white outline-none">
                         </div>
                     </div>
@@ -86,6 +94,12 @@ const NavBar = (props) =>{
 
 
 const MessageTile = (props)=>{
+    
+    useEffect(()=>{
+        const chatField = document.getElementById("chat-field");
+        chatField.parentNode.scrollTop = chatField.parentNode.scrollTopMax;
+    },[]);
+
     return (
         <div className="flex gap-4">
             <div className="w-11 h-11 rounded-full overflow-hidden">

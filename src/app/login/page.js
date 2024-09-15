@@ -7,7 +7,6 @@ import {signIn} from 'next-auth/react';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
 import axios from 'axios';
-import { RedirectStatusCode } from "next/dist/client/components/redirect-status-code";
 
 
 const Login = ()=>{
@@ -19,7 +18,7 @@ const Login = ()=>{
     const [password, setPassword] = useState("");
 
     if(session){
-      console.log(session)
+      router.push("/channels/me");
     }
 
     
@@ -41,6 +40,7 @@ const Login = ()=>{
         });
 
         if(res.ok){
+          router.push("/channels/me");
         }
 
 
