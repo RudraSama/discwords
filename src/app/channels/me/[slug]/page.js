@@ -1,20 +1,27 @@
 "use client"
-
+import StompClient from "../../../../lib/websocket/websocket";
 import Image from "next/image";
 import {useEffect, useState} from 'react';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
+import { Stomp } from "@stomp/stompjs";
+import { useSearchParams } from "next/navigation";
 
-const Chat = ()=>{
+const Chat = ({params})=>{
+
+    const searchParams = useSearchParams();
     
     const session = useSession();
     const router = useRouter();
-
+    const slug = params.slug;
+    const profile_id = searchParams.get("id");
+    const receiver_id = searchParams.get("id2");
     const [messages, setMessage] = useState([]);
+    const [stompConnected, setStompConnected] = useState(false);
 
 
     if(session.status === "unauthenticated"){
-        router.push("/login");
+        // router.push("/login");
     }
     
     const addMessageTile = (user, message, date)=>{
@@ -25,14 +32,40 @@ const Chat = ()=>{
         };
 
         messages.push(messageObj)
-        console.log(messageObj);
+        // console.log(messageObj);
 
         setMessage([...messages]);
+        sendMessage(message);
     }
-
 
     useEffect(()=>{
 
+        setTimeout(() => {
+            
+            if(StompClient.connected){
+                console.log("connected ehe");
+                
+                StompClient.getClient().subscribe(`/topic/conversation/${slug}/${receiver_id}`, (message)=>{
+                    console.log("useEffect with timeout");
+                    const msg = JSON.parse(message.body).message;
+                    console.log(msg);
+                    const messageObj = {
+                        username : "shaktiman",
+                        date: "20/09/2024 17:49",
+                        message: msg
+                    };
+                    messages.push(messageObj);
+                    setMessage([...messages]);
+                    console.log(JSON.parse(message.body));
+                    
+                })
+                StompClient.getClient().subscribe(`/topic/conversation/${slug}/${profile_id}`, (message)=>{
+                    console.log("sender is subscribed to iteself");
+                    console.log(JSON.parse(message.body).message)
+                })
+            }
+
+        }, 500);
 
         const textField = document.getElementById("text-field");
         textField.addEventListener("beforeinput", (event)=>{
@@ -40,11 +73,22 @@ const Chat = ()=>{
             if(event.inputType === "insertParagraph"){
                 event.preventDefault();
 
-                addMessageTile("IamBatMann", event.target.innerHTML, "20/09/2024 17:49");
+                addMessageTile(session?.data?.user?.username, event.target.innerHTML, "20/09/2024 17:49");
             }
 
         });
     },[]);
+
+    const sendMessage = (message) =>{
+        const new_msg = {
+            directMessage_id: 123,
+            message: message,
+            timestamp: "20/09/2024 17:49",
+            profile_id: 12,
+            conversation_id: parseInt(slug),
+        }
+        StompClient.sendMessage(`/app/topic/conversation/${slug}/${profile_id}`, new_msg);
+    }
 
     return (
         <div className="w-full">

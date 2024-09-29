@@ -21,7 +21,7 @@ class StompClientSingleton{
                     access_token: token,
                 }
             });
-
+            
             this.client.webSocketFactory = ()=>{
                 return new SockJS(url);
             }
@@ -51,8 +51,8 @@ class StompClientSingleton{
 
 
     sendMessage(topic, message){
+        console.log(topic)
 
-        console.log(message);
         this.client.publish({
             destination: topic, 
             body: JSON.stringify(message),
