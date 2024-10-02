@@ -3,23 +3,24 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import {signIn} from 'next-auth/react';
-import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
+import {useSelector, useDispatch} from 'react-redux';
+import {setUser} from '../../lib/features/userSlice';
 
 
 const Login = ()=>{
     
-    const {data: session} = useSession();
     const router = useRouter();
+
+    const {user} = useSelector((state)=>state.user);
+    const dispatch = useDispatch();
+
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    if(session){
-      router.push("/channels/me");
-    }
 
     
     const handleChangeEmail = (event) =>{
@@ -32,17 +33,17 @@ const Login = ()=>{
     const handleLogin = async(event) => {
         event.preventDefault();
 
-
-        const res = await signIn('credentials', {
-            redirect: false,
-            email,
-            password
+        const res = await axios.post('http://localhost:8080/api/loginUser', {
+               email: email,
+               password: password
         });
-
-        if(res.ok){
-          router.push("/channels/me");
+   
+           
+        if(res.data.profile){
+            dispatch(setUser(res.data.user));
+            Cookies.set("token", res.data.token);
+            router.push("/channels/me");
         }
-
 
     }
 
@@ -50,15 +51,21 @@ const Login = ()=>{
         
         const token = response.credential;
 
-        console.log(response);
         try{
             const res = await axios.post('http://localhost:8080/api/loginUserWithGoogle', {tokenId: token});
-            console.log(res.data);
+
+            if(res.data.profile){
+                dispatch(setUser(res.data.user));
+                Cookies.set("token", res.data.token);
+                router.push("/channels/me");
+            }
+
         }
         catch(error){
             console.log(error);
         }
     }
+
     
     return (
         <>

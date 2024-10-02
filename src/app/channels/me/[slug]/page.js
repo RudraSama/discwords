@@ -1,8 +1,6 @@
 "use client"
-import StompClient from "../../../../lib/websocket/websocket";
 import Image from "next/image";
 import {useEffect, useState} from 'react';
-import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
 import { Stomp } from "@stomp/stompjs";
 import { useSearchParams } from "next/navigation";
@@ -14,8 +12,9 @@ const Chat = ({params})=>{
     const session = useSession();
     const router = useRouter();
     const slug = params.slug;
-    const profile_id = searchParams.get("id");
-    const receiver_id = searchParams.get("id2");
+    const sender = searchParams.get("sender");
+    const receiver = searchParams.get("receiver");
+    const username = searchParams.get("user");
     const [messages, setMessage] = useState([]);
     const [stompConnected, setStompConnected] = useState(false);
 
@@ -45,7 +44,7 @@ const Chat = ({params})=>{
             if(StompClient.connected){
                 console.log("connected ehe");
                 
-                StompClient.getClient().subscribe(`/topic/conversation/${slug}/${receiver_id}`, (message)=>{
+                StompClient.getClient().subscribe(`/topic/conversation/${slug}/${sender}`, (message)=>{
                     console.log("useEffect with timeout");
                     const msg = JSON.parse(message.body).message;
                     console.log(msg);
@@ -59,10 +58,6 @@ const Chat = ({params})=>{
                     console.log(JSON.parse(message.body));
                     
                 })
-                StompClient.getClient().subscribe(`/topic/conversation/${slug}/${profile_id}`, (message)=>{
-                    console.log("sender is subscribed to iteself");
-                    console.log(JSON.parse(message.body).message)
-                })
             }
 
         }, 500);
@@ -73,7 +68,7 @@ const Chat = ({params})=>{
             if(event.inputType === "insertParagraph"){
                 event.preventDefault();
 
-                addMessageTile(session?.data?.user?.username, event.target.innerHTML, "20/09/2024 17:49");
+                addMessageTile(username, event.target.innerHTML, "20/09/2024 17:49");
             }
 
         });
@@ -87,7 +82,7 @@ const Chat = ({params})=>{
             profile_id: 12,
             conversation_id: parseInt(slug),
         }
-        StompClient.sendMessage(`/app/topic/conversation/${slug}/${profile_id}`, new_msg);
+        StompClient.sendMessage(`/app/topic/conversation/${slug}/${receiver}`, new_msg);
     }
 
     return (

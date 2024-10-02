@@ -1,16 +1,15 @@
 "use client"
-import {SessionProvider} from 'next-auth/react';
+
+import StoreProvider from './../../lib/StoreProvider';
 
 const Layout = ({children})=>{
-
+    
     return (
-        <>
-            <SessionProvider>
-                {children}
-            </SessionProvider>
-        </>
+        <StoreProvider>
+            {children}
+        </StoreProvider>
     );
 }
 
-
 export default Layout;
+
