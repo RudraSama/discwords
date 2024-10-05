@@ -9,7 +9,6 @@ const Chat = ({params})=>{
 
     const searchParams = useSearchParams();
     
-    const session = useSession();
     const router = useRouter();
     const slug = params.slug;
     const sender = searchParams.get("sender");
@@ -18,10 +17,6 @@ const Chat = ({params})=>{
     const [messages, setMessage] = useState([]);
     const [stompConnected, setStompConnected] = useState(false);
 
-
-    if(session.status === "unauthenticated"){
-        // router.push("/login");
-    }
     
     const addMessageTile = (user, message, date)=>{
         const messageObj = {
