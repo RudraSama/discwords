@@ -8,11 +8,8 @@ import { Stomp } from "@stomp/stompjs";
 import { useSearchParams } from "next/navigation";
 
 const Chat = ({params})=>{
-
-    // const searchParams = useSearchParams();
-    // const [searchParams] = useSearchParams();
-    const searchParams = new URLSearchParams(window.location.search);
     
+    const searchParams = useSearchParams();
 
     const router = useRouter();
     const slug = params.slug;

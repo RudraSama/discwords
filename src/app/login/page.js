@@ -40,7 +40,7 @@ const Login = ()=>{
    
            
         if(res.data.profile){
-            dispatch(setUser(res.data.user));
+            dispatch(setUser(res.data.profile));
             Cookies.set("token", res.data.token);
             router.push("/channels/me");
         }

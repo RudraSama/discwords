@@ -9,30 +9,23 @@ import { setUser } from '@/lib/features/userSlice';
 
 
 const Layout = ({children})=>{
-    
+
+    const {user} = useSelector((state)=>state.user);
     const router = useRouter();
-    const dispatch = useDispatch();
-    const user = useSelector((state) => state.user);
 
-    useEffect(()=>{
+    console.log(user);
 
-        if(!user){
-            router.push('/login');
-        }
-        else{
-            dispatch(setUser(user));
-        }
-
-    },[user])
+    if(Object.keys(user).length == 0){
+        router.push("/login");
+    }
     
+  
     return (
-        <StoreProvider>
-            <main className='flex'>
-                <ServerList/>
-                <FriendsList/>
-                {children}
-            </main>
-        </StoreProvider>
+        <main className='flex'>
+            <ServerList/>
+            <FriendsList/>
+            {children}
+        </main>
     );
 }
 
