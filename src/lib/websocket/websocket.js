@@ -1,8 +1,6 @@
 import { Client } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 
-import {receiveDirectMessage} from '../features/directMessageSlice';
-
 
 
 class StompClientSingleton{
@@ -44,11 +42,6 @@ class StompClientSingleton{
     getClient(){
         return this.client;
     }
-
-    setDispatch(dispatch){
-        this.dispatch = dispatch;
-    }
-
 
     sendMessage(topic, message){
         console.log(topic)

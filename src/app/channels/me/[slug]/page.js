@@ -1,5 +1,7 @@
 "use client"
+
 import Image from "next/image";
+import StompClient from "../../../../lib/websocket/websocket"
 import {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import { Stomp } from "@stomp/stompjs";
@@ -7,8 +9,11 @@ import { useSearchParams } from "next/navigation";
 
 const Chat = ({params})=>{
 
-    const searchParams = useSearchParams();
+    // const searchParams = useSearchParams();
+    // const [searchParams] = useSearchParams();
+    const searchParams = new URLSearchParams(window.location.search);
     
+
     const router = useRouter();
     const slug = params.slug;
     const sender = searchParams.get("sender");
