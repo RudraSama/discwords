@@ -5,19 +5,40 @@ import FriendsList from '../../components/FriendList';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { setUser } from '@/lib/features/userSlice';
+import { setUser, fetchUserByToken} from '../../lib/features/userSlice';
 
 
 const Layout = ({children})=>{
 
-    const {user} = useSelector((state)=>state.user);
+    const {user, authenticated, loading} = useSelector((state)=>state.user);
     const router = useRouter();
+    const dispatch = useDispatch();
 
-    console.log(user);
+    //need to fix this issue
+    /* When this page is loaded (refreshed) - 
+     *        - both authenticated and loading sets to false - which casue page to route to "/login"
+     *        - We need to either set inital state of loading to true.
+     *
+     */
+    useEffect(()=>{
+        dispatch(fetchUserByToken());
+    }, []);
 
-    if(Object.keys(user).length == 0){
-        router.push("/login");
-    }
+    useEffect(()=>{
+       console.log("authenticated:  "+authenticated+"    loading: "+loading) 
+        if(!loading && !authenticated){
+            router.push("/login");
+        }
+    }, [loading]);
+
+
+    //    if(loading){
+    //        return (
+    //            <main>
+    //                loading...
+    //            </main>
+    //        );
+    //    }
     
   
     return (

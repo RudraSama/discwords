@@ -1,18 +1,24 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const fetchUserByToken = createAsyncThunk("user/fetchUser", async (userObj)=>{
+export const fetchUserByToken = createAsyncThunk("userSlice/fetchUserByToken", async ()=>{
+    
+    const token = Cookies.get("token");
+
+    if(token == undefined)
+        return {};
 
     const headers = {
-        "x-access-token": "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY0MTk4NDY4NzI5NCIsImVtYWlsIjoiZ21zdGNoc0BnbWFpbC5jb20iLCJzdWIiOiJnYXVyYXYiLCJpYXQiOjE3Mjc2NDE5ODYsImV4cCI6MTczNTQxNzk4Nn0.rkflAHQwu-ZO4SE5dDB0qRn7GvIAyBhbmdxcGK5nPlY"
+        "x-access-token": token 
     };
 
     const res = await axios.get("http://localhost:8080/api/checkAuthorization", {
         headers: headers
     });
 
-    res.data;
-})
+    return res.data;
+});
 
 const initialState = {
     user : {},
@@ -31,18 +37,21 @@ const userSlice = createSlice({
         },
     },
 
-    extraReduces: {
-        [fetchUserByToken.pending](state){
-            state.loading = true
-        },
-
-        [fetchUserByToken.fullfilled](state){
-            state.user = action.palyload;
+    extraReducers: (builder)=>{
+        builder.addCase(fetchUserByToken.pending, (state, action)=>{
+            state.loading = true;
+        }).addCase(fetchUserByToken.fulfilled, (state, action)=>{
+            if(action.payload.error){
+                state.authenticated = false;
+            }
+            else{
+                state.user = action.payload;
+                state.authenticated = true;
+            }
             state.loading = false;
-
-            //Have to change state of authenticated to true or false based on  returend payload
-        }
+        })
     }
+
 });
 
 export const {setUser} = userSlice.actions;
