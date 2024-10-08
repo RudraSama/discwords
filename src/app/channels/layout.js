@@ -14,12 +14,6 @@ const Layout = ({children})=>{
     const router = useRouter();
     const dispatch = useDispatch();
 
-    //need to fix this issue
-    /* When this page is loaded (refreshed) - 
-     *        - both authenticated and loading sets to false - which casue page to route to "/login"
-     *        - We need to either set inital state of loading to true.
-     *
-     */
     useEffect(()=>{
         dispatch(fetchUserByToken());
     }, []);

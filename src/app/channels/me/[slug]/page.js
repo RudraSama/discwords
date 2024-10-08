@@ -6,6 +6,7 @@ import {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import { Stomp } from "@stomp/stompjs";
 import { useSearchParams } from "next/navigation";
+import {useSelector} from 'react-redux';
 
 const Chat = ({params})=>{
     
@@ -13,9 +14,13 @@ const Chat = ({params})=>{
 
     const router = useRouter();
     const slug = params.slug;
+
     const sender = searchParams.get("sender");
     const receiver = searchParams.get("receiver");
     const username = searchParams.get("user");
+
+    const {user} = useSelector((state)=>state.user);
+
     const [messages, setMessage] = useState([]);
     const [stompConnected, setStompConnected] = useState(false);
 
@@ -35,6 +40,8 @@ const Chat = ({params})=>{
     }
 
     useEffect(()=>{
+
+        console.log(user);
 
         setTimeout(() => {
             
