@@ -1,5 +1,7 @@
 "use client"
 import {useState} from 'react';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const Me = ()=>{
 
@@ -47,7 +49,8 @@ const NavBar = (props) =>{
 const Activity = (props) =>{
     return (
         <div className="bg-gray-bg-700 h-[calc(100vh-56px)] flex">
-            <div className="w-full border-r-[1px] border-gray-bg-600 py-4 px-6 flex flex-col gap-6">
+            <div className="w-full border-r-[1px] border-gray-bg-600 py-4 px-8 flex flex-col">
+              
                 {props.type === "all"?
                         <AllFriends/>:
                         props.type === "online"?
@@ -59,6 +62,7 @@ const Activity = (props) =>{
                         props.type === "addFriend"?
                         <AddFriend/>:""
                 }
+                
             </div>
             <div className="w-[500px] py-6 px-4 flex flex-col gap-8">
                 <span className="text-xl font-bold text-white">Active Now</span>
@@ -86,9 +90,34 @@ const OnlineFriends = ()=>{
 
 
 const AddFriend = ()=>{
+
+    const [frienddUsername, setFrienddUsername] = useState("");
+
+    const handleUsernameChange = (event)=>{
+        setFrienddUsername(event.target.value);
+    }
+
+    const {user} = useSelector((state)=> state.user.user);
+    console.log(user);
+
+    const handleFriendRequest = async() =>{
+
+        const res = await axios.post("/api/addFriend", {
+            //in future instead of profile id  send web token to keep it secure
+            profileId: user.profileId,
+            friendUsername: frienddUsername,
+        })
+    }
+
     return (
-        <div>
-            <input placeholder="Enter username"/>
+        <div className="my-4 w-full flex flex-col">
+              <p className="text-white font-bold">ADD FRIEND</p>
+              <p className="text-gray-bg-500 my-3">You can add friends with their Discord usernames</p>
+            <div className="flex w-full p-3 rounded-lg border-[1px] border-gray-bg-700 bg-gray-bg-900 justify-between focus-within:border-[1px] focus-within:border-cyan-400">
+                <input className="flex-[85%] bg-gray-bg-900 outline-none text-white" placeholder="Enter username" onChange={handleUsernameChange}/>
+                <button onClick={handleFriendRequest} className="flex-[15%] p-2 text-gray-bg-500 bg-indigo-800 rounded-md">Send Request</button>
+            </div>
+            <hr className="h-[2px] my-5 border-gray-bg-600 w-[105%] self-center"/>
         </div>
     );
 }
