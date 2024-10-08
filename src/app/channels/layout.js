@@ -25,20 +25,19 @@ const Layout = ({children})=>{
     }, []);
 
     useEffect(()=>{
-       console.log("authenticated:  "+authenticated+"    loading: "+loading) 
         if(!loading && !authenticated){
             router.push("/login");
         }
     }, [loading]);
 
 
-    //    if(loading){
-    //        return (
-    //            <main>
-    //                loading...
-    //            </main>
-    //        );
-    //    }
+    if(loading){
+        return (
+            <main>
+                loading...
+            </main>
+        );
+    }
     
   
     return (

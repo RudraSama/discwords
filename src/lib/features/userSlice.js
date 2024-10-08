@@ -7,7 +7,7 @@ export const fetchUserByToken = createAsyncThunk("userSlice/fetchUserByToken", a
     const token = Cookies.get("token");
 
     if(token == undefined)
-        return {};
+        return {auth: false};
 
     const headers = {
         "x-access-token": token 
@@ -17,13 +17,18 @@ export const fetchUserByToken = createAsyncThunk("userSlice/fetchUserByToken", a
         headers: headers
     });
 
-    return res.data;
+    if(res.data.error){
+        return {auth : false}
+    }
+    
+    return {user: res.data, auth: true};
+
 });
 
 const initialState = {
     user : {},
     authenticated: false,
-    loading: false
+    loading: true 
 }
 
 
@@ -41,13 +46,16 @@ const userSlice = createSlice({
         builder.addCase(fetchUserByToken.pending, (state, action)=>{
             state.loading = true;
         }).addCase(fetchUserByToken.fulfilled, (state, action)=>{
-            if(action.payload.error){
-                state.authenticated = false;
-            }
-            else{
-                state.user = action.payload;
+            
+            if(action.payload.auth){
+                state.user = action.payload.user;
                 state.authenticated = true;
             }
+            else{
+                state.authenticated = false;
+            }
+            state.loading = false;
+        }).addCase(fetchUserByToken.rejected, (state, action)=>{
             state.loading = false;
         })
     }
