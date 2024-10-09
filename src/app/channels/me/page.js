@@ -56,7 +56,7 @@ const Activity = (props) =>{
                         props.type === "online"?
                         <OnlineFriends/>:
                         props.type === "pending"?
-                        <div>Pending Requests</div>:
+                        <PendingRequests/>:
                         props.type === "blocked"?
                         <div>Blocked Requests</div>:
                         props.type === "addFriend"?
@@ -74,13 +74,6 @@ const Activity = (props) =>{
     )
 }
 
-const AllFriends = ()=>{
-    return (
-        <div>
-        </div>
-    );
-}
-
 const OnlineFriends = ()=>{
     return (
         <div>
@@ -88,25 +81,53 @@ const OnlineFriends = ()=>{
     );
 }
 
+const AllFriends = ()=>{
+    return (
+        <div>
+        </div>
+    );
+}
+
+
+const PendingRequests = () =>{
+
+    const [requests, setRequests] = useState();
+
+    const {user} = useSelector((state)=>state.user);
+
+    const res = await axios.get("http://localhost:8080/api/fetchRequests", {
+        profile_id: user.profile_id,
+    });z
+    
+
+    return (
+        <div>
+
+        </div>
+    )
+}
+
 
 const AddFriend = ()=>{
 
-    const [frienddUsername, setFrienddUsername] = useState("");
+    const [friendUsername, setFrienddUsername] = useState("");
+
+    const [response, setResponse] = useState("");
 
     const handleUsernameChange = (event)=>{
         setFrienddUsername(event.target.value);
     }
 
-    const {user} = useSelector((state)=> state.user.user);
-    console.log(user);
+    const {user} = useSelector((state)=> state.user);
 
     const handleFriendRequest = async() =>{
 
-        const res = await axios.post("/api/addFriend", {
+        const res = await axios.post("http://localhost:8080/api/addFriend", {
             //in future instead of profile id  send web token to keep it secure
-            profileId: user.profileId,
-            friendUsername: frienddUsername,
-        })
+            profile_id: user.profileId,
+            username: friendUsername,
+        });
+        setResponse(res.data);
     }
 
     return (
@@ -115,8 +136,9 @@ const AddFriend = ()=>{
               <p className="text-gray-bg-500 my-3">You can add friends with their Discord usernames</p>
             <div className="flex w-full p-3 rounded-lg border-[1px] border-gray-bg-700 bg-gray-bg-900 justify-between focus-within:border-[1px] focus-within:border-cyan-400">
                 <input className="flex-[85%] bg-gray-bg-900 outline-none text-white" placeholder="Enter username" onChange={handleUsernameChange}/>
-                <button onClick={handleFriendRequest} className="flex-[15%] p-2 text-gray-bg-500 bg-indigo-800 rounded-md">Send Request</button>
+                <button onClick={handleFriendRequest} className="flex-[15%] p-1 text-gray-bg-500 bg-indigo-800 rounded-md">Send Request</button>
             </div>
+            <p className="text-green-700 p-2">{response}</p>
             <hr className="h-[2px] my-5 border-gray-bg-600 w-[105%] self-center"/>
         </div>
     );
