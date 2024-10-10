@@ -97,6 +97,45 @@ const PendingRequests = () =>{
     const [incomingFriendRequests, setIncomingFriendRequests] = useState([]);
     const [outgoingFriendRequests, setOutgoingFriendRequests] = useState([]);
 
+    const removeFriendRequestFromState = (state, id)=>{
+        state.map((item, index)=>{
+            if(item.id == id){
+                 state.splice(index, 1);
+            }
+        });
+
+        return state;
+    }
+
+    const handleAcceptRequest = async(id)=>{
+
+        const res = await axios.post(`http://localhost:8080/api/acceptFriendRequest/${id}`);
+
+        if(res.data === "success"){
+            const arr = removeFriendRequestFromState(incomingFriendRequests, id);
+            setIncomingFriendRequests([...arr]);
+        }
+
+
+    }
+
+    const handleRejectRequest = async(id, incoming = false)=>{
+
+        const res = await axios.post(`http://localhost:8080/api/rejectFriendRequest/${id}`);
+
+        if(res.data === "success"){
+            if(incoming){
+                const arr = removeFriendRequestFromState(incomingFriendRequests, id);
+                setIncomingFriendRequests([...arr]);
+            }
+            else{
+                const arr = removeFriendRequestFromState(outgoingFriendRequests, id);
+                setOutgoingFriendRequests([...arr]);
+            }
+        }
+
+    }
+
     
     useEffect(()=>{
 
@@ -120,13 +159,13 @@ const PendingRequests = () =>{
         <div className="flex flex-col gap-2">
             {incomingFriendRequests.map((request, index)=>{
                 return (
-                    <FriendRequestTile request={request} incoming={true} key={index}/>
+                    <FriendRequestTile request={request} incoming={true} key={index} callbacks={{acceptRequest: handleAcceptRequest, rejectRequest: handleRejectRequest}}/>
                 )
             })}
 
             {outgoingFriendRequests.map((request, index)=>{
                 return (
-                    <FriendRequestTile request={request} incoming={false} key={index}/>
+                    <FriendRequestTile request={request} incoming={false} key={index} callbacks={{rejectRequest: handleRejectRequest}}/>
                 )
             })}
         </div>
@@ -134,8 +173,9 @@ const PendingRequests = () =>{
 }
 
 const FriendRequestTile = (props)=>{
+    
     return (
-        <div className="flex gap-4 p-2 hover:bg-gray-bg-600 hover:rounded-xl" >
+        <div className="flex gap-4 p-2 hover:bg-gray-bg-600 hover:rounded-xl cursor-pointer" >
             <div className="w-11 h-11 rounded-full overflow-hidden">
               <Image src={props.request.picture_url === ""?"/batman.jpeg": props.request.picture_url} alt="this is cat user" width={100} height={100}/>
             </div>
@@ -152,13 +192,13 @@ const FriendRequestTile = (props)=>{
 
             <div className="flex gap-2 ml-auto my-auto">
                 {props.incoming?(
-                    <div className="bg-gray-bg-900 rounded-full py-2 px-2.5">
-                        <i className="fa-solid fa-check fa-xl text-gray-400" />
-                    </div>
+                    <button onClick={()=>{props.callbacks.acceptRequest(props.request.id)}} className="bg-gray-bg-900 rounded-full py-2 px-2.5">
+                        <i className="fa-solid fa-check fa-xl text-gray-400 hover:text-green-400" />
+                    </button>
                 ):""}
-                <div className="bg-gray-bg-900 rounded-full py-2 px-2.5">
-                    <i className="fa-solid fa-xmark fa-xl text-gray-400" />
-                </div>
+                <button onClick={()=>{props.callbacks.rejectRequest(props.request.id, props.incoming)}} className="bg-gray-bg-900 rounded-full py-2 px-2.5">
+                    <i className="fa-solid fa-xmark fa-xl text-gray-400 hover:text-red-600" />
+                </button>
             </div>
         </div>
     );
