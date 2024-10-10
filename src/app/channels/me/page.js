@@ -92,53 +92,77 @@ const AllFriends = ()=>{
 
 const PendingRequests = () =>{
 
-    const [friendRequests, setFriendRequests] = useState([]);
-
     const {user} = useSelector((state)=>state.user);
+
+    const [incomingFriendRequests, setIncomingFriendRequests] = useState([]);
+    const [outgoingFriendRequests, setOutgoingFriendRequests] = useState([]);
 
     
     useEffect(()=>{
 
         axios.get(`http://localhost:8080/api/fetchFriendRequests/${user.profileId}`).then(res=>{
-            setFriendRequests(res.data);
+            res.data.map((item)=>{
+                if(item.sender_id == user.profileId){
+                    outgoingFriendRequests.push(item);
+                    setOutgoingFriendRequests([...outgoingFriendRequests]);
+                }
+                else{
+                    incomingFriendRequests.push(item);
+                    setIncomingFriendRequests([...incomingFriendRequests]);
+                }
+            });
         });
-
 
     },[]);
 
+
     return (
         <div className="flex flex-col gap-2">
-            {friendRequests.map((request, index)=>{
+            {incomingFriendRequests.map((request, index)=>{
                 return (
-                    <div className="flex gap-4 p-2 hover:bg-gray-bg-600 hover:rounded-xl" key={index}>
-                        <div className="w-11 h-11 rounded-full overflow-hidden">
-                          <Image src={request.picture_url === ""?"/batman.jpeg": request.picture_url} alt="this is cat user" width={100} height={100}/>
-                        </div>
+                    <FriendRequestTile request={request} incoming={true} key={index}/>
+                )
+            })}
 
-                        <div className="gap-4">
-                            <span className="flex gap-3 text-base items-end text-white font-bold leading-5 mb-1">
-                                {request.username}
-                            </span>
-                            <span className="text-gray-400">
-                                Incoming Friend request
-                            </span>
-                        </div>
-
-                        <div className="flex gap-2 ml-auto my-auto">
-                            <div className="bg-gray-bg-900 rounded-full py-2 px-2.5">
-                                <i className="fa-solid fa-check fa-xl text-gray-400" />
-                            </div>
-                            <div className="bg-gray-bg-900 rounded-full py-2 px-2.5">
-                                <i className="fa-solid fa-xmark fa-xl text-gray-400" />
-                            </div>
-                        </div>
-                    </div>
+            {outgoingFriendRequests.map((request, index)=>{
+                return (
+                    <FriendRequestTile request={request} incoming={false} key={index}/>
                 )
             })}
         </div>
     );
 }
 
+const FriendRequestTile = (props)=>{
+    return (
+        <div className="flex gap-4 p-2 hover:bg-gray-bg-600 hover:rounded-xl" >
+            <div className="w-11 h-11 rounded-full overflow-hidden">
+              <Image src={props.request.picture_url === ""?"/batman.jpeg": props.request.picture_url} alt="this is cat user" width={100} height={100}/>
+            </div>
+
+            <div className="gap-4">
+                <span className="flex gap-3 text-base items-end text-white font-bold leading-5 mb-1">
+                    {props.request.username}
+                </span>
+                <span className="text-gray-400">
+                    {props.incoming?"Incoming Friend request":"Outgoing Friend Request"}
+                </span>
+            </div>
+
+
+            <div className="flex gap-2 ml-auto my-auto">
+                {props.incoming?(
+                    <div className="bg-gray-bg-900 rounded-full py-2 px-2.5">
+                        <i className="fa-solid fa-check fa-xl text-gray-400" />
+                    </div>
+                ):""}
+                <div className="bg-gray-bg-900 rounded-full py-2 px-2.5">
+                    <i className="fa-solid fa-xmark fa-xl text-gray-400" />
+                </div>
+            </div>
+        </div>
+    );
+}
 
 const AddFriend = ()=>{
 
