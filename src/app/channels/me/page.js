@@ -83,8 +83,46 @@ const OnlineFriends = ()=>{
 }
 
 const AllFriends = ()=>{
+    
+    const {user} = useSelector((state)=>state.user);
+    const [friends, setFriends] = useState([]);
+
+    useEffect(()=>{
+        axios.get(`http://localhost:8080/api/fetchFriends/${user.profileId}`).then(res=>{
+            if(res.data){
+                setFriends(res.data);
+            }
+        });
+    }, []);
+
     return (
         <div>
+            {friends.map((friend, index)=>{
+                return ( 
+                    <FriendTile friend={friend} key={index}/>
+                )
+            })}
+        </div>
+    );
+}
+
+const FriendTile = (props)=>{
+    
+    return (
+        <div className="flex gap-4 p-2 hover:bg-gray-bg-600 hover:rounded-xl cursor-pointer" >
+            <div className="w-11 h-11 rounded-full overflow-hidden">
+              <Image src={props.friend.pictureUrl === ""?"/batman.jpeg": props.friend.picture_url} alt="this is cat user" width={100} height={100}/>
+            </div>
+
+            <div className="gap-4">
+                <span className="flex gap-3 text-base items-end text-white font-bold leading-5 mb-1">
+                    {props.friend.username}
+                </span>
+                <span className="text-gray-400">
+                    {props.online?"Online":"Offline"}
+                </span>
+            </div>
+
         </div>
     );
 }
@@ -172,6 +210,8 @@ const PendingRequests = () =>{
     );
 }
 
+
+//TODO - Need to make its own Generic Component for other usages
 const FriendRequestTile = (props)=>{
     
     return (
