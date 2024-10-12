@@ -1,10 +1,24 @@
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Link from 'next/link';
-import UserIcon from "@/components/UserIcon";
+import UserIcon from "./UserIcon";
+import {useSelector} from 'react-redux';
+import axios from 'axios';
 
-const FriendsList = (props) =>{
-    
+const Conversations = (props) =>{
+
+    const [conversations, setConversations] = useState([]);
+    const {user} = useSelector((state)=>state.user);
+
+    useEffect(()=>{
+        axios.get(`http://localhost:8080/api/fetchConversations/${user.profileId}`).then(res=>{
+            if(res.data){
+                setConversations(res.data);
+            }
+        });
+    },[]);
+
+
     return(
         <div className="h-screen w-[250px] bg-gray-bg-800">
             <SearchBar/>
@@ -27,15 +41,19 @@ const FriendsList = (props) =>{
             </div>
 
             <ul className="[&>li]:w-[236px] [&>li]:my-[2px] [&>li]:mx-[6px]">
-                <li>
-                    <UserIcon username="Cattttt" icon_url={"/icon-cat.png"} online={true}/>
-                </li>
-                <li>
-                    <UserIcon username="IamBatman" icon_url={"/batman.jpeg"} online={true}/>
-                </li>
+
+                {conversations.map((conv, index)=>{
+                    return (
+                        <li key={index}>
+                            <UserIcon username={conv.friend_profile.username} icon_url={conv.friend_profile.pictureUrl=== ""?"/batman.jpeg":conv.friend_profile.pictureUrl} online={true}/>
+                        </li>
+                    )
+
+                })}
+
             </ul>
         </div>
-    )
+    );
 
 }
 
@@ -73,4 +91,4 @@ const Shop = (props) => {
     )
 }
 
-export default FriendsList;
+export default Conversations;

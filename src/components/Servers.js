@@ -1,7 +1,7 @@
 import React from "react"
 import ServerPic from "./ServerPic";
 
-const ServerList = () =>{
+const Servers = () =>{
     return(
         <div className="w-18 h-screen bg-[#1e1f22] flex flex-col px-3">
             
@@ -33,4 +33,4 @@ const AddNewServer = () =>{
 }
 
 
-export default ServerList;
+export default Servers;

@@ -44,7 +44,7 @@ const NavBar = (props) =>{
                 <button><i className="fas fa-question text-xl text-gray-bg-500"/></button>
             </div>
         </div>
-    )
+    );
 }
 
 const Activity = (props) =>{
