@@ -1,6 +1,6 @@
 import { Client } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
-
+import Cookies from 'js-cookie';
 
 
 class StompClientSingleton{
@@ -44,8 +44,6 @@ class StompClientSingleton{
     }
 
     sendMessage(topic, message){
-        console.log(topic)
-
         this.client.publish({
             destination: topic, 
             body: JSON.stringify(message),
@@ -55,7 +53,7 @@ class StompClientSingleton{
 
 }
 
-const token = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjE2NzEwMDk2MzQ0NyIsImVtYWlsIjoiZ21zdGNoc0BnbWFpbC5jb20iLCJzdWIiOiJnYXVyYXYiLCJpYXQiOjE3MjYxNjcxMDIsImV4cCI6MTczMzk0MzEwMn0.N9-gM7-aM-16tw-7rqIkdABWXiCA9UnqP2vWkC5knz0";
+const token = Cookies.get("token");
 const url = "http://localhost:8080/ws";
 
 

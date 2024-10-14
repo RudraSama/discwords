@@ -8,14 +8,14 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 import {useSelector, useDispatch} from 'react-redux';
-import {setUser} from '../../lib/features/userSlice';
+import {fetchUserByToken, setUser} from '../../lib/features/userSlice';
 
 
 const Login = ()=>{
     
     const router = useRouter();
 
-    const {user} = useSelector((state)=>state.user);
+    const {user, authenticated, loading} = useSelector((state)=>state.user);
     const dispatch = useDispatch();
 
     
@@ -65,6 +65,17 @@ const Login = ()=>{
             console.log(error);
         }
     }
+
+    useEffect(()=>{
+        dispatch(fetchUserByToken());
+    }, []);
+
+
+    useEffect(()=>{
+        if(!loading && authenticated){
+            router.push("/channels/me");
+        }
+    }, [loading]);
 
     
     return (

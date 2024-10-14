@@ -10,6 +10,7 @@ const Conversations = (props) =>{
     const [conversations, setConversations] = useState([]);
     const {user} = useSelector((state)=>state.user);
 
+
     useEffect(()=>{
         axios.get(`http://localhost:8080/api/fetchConversations/${user.profileId}`).then(res=>{
             if(res.data){
@@ -44,8 +45,10 @@ const Conversations = (props) =>{
 
                 {conversations.map((conv, index)=>{
                     return (
-                        <li key={index}>
-                            <UserIcon username={conv.friend_profile.username} icon_url={conv.friend_profile.pictureUrl=== ""?"/batman.jpeg":conv.friend_profile.pictureUrl} online={true}/>
+                        <li key={index} className="cursor-pointer">
+                            <Link href={"/channels/me/"+conv.conversation_id}>
+                                <UserIcon username={conv.friend_profile.username} icon_url={conv.friend_profile.pictureUrl=== ""?"/batman.jpeg":conv.friend_profile.pictureUrl} online={true}/>
+                            </Link>
                         </li>
                     )
 
