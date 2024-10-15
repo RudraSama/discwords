@@ -7,9 +7,10 @@ import {useRouter} from 'next/navigation';
 import { Stomp } from "@stomp/stompjs";
 import {useSelector} from 'react-redux';
 import axios from 'axios';
+import {FormatDate} from '../../../../lib/utils';
 
 const Chat = ({params})=>{
-    
+
     const router = useRouter();
     const conversation_id = params.slug;
 
@@ -60,8 +61,24 @@ const Chat = ({params})=>{
         axios.get(`http://localhost:8080/api/fetchConversation/${conversation_id}/${user.profileId}`).then(res=>{
             if(res.data){
                 setConversation(res.data);
+
+                axios.get(`http://localhost:8080/api/fetchMessages/conversation/${res.data.conversation_id}`).then(res=>{
+                    if(res.data){
+                        res.data.map((message)=>{
+                            const messageObj = {
+                                username: message.sender_profile.username,
+                                picture_url: message.sender_profile.pictureUrl,
+                                timestamp: message.timestamp,
+                                message: message.message
+                            };
+                            messages.push(messageObj);
+                            setMessage([...messages]);
+                        });
+                    }
+                });
             }
         });
+
 
     },[]);
 
@@ -97,13 +114,17 @@ const Chat = ({params})=>{
         const textField = document.getElementById("text-field");
         textField.addEventListener("beforeinput", (event)=>{
 
-            if(event.inputType === "insertParagraph"){
+            if(event.target.innerHTML === "<br>"){
+                event.target.innerHTML = "";
+            }
+
+            if(event.inputType === "insertParagraph" && event.target.innerText.trim() !== ""){
                 event.preventDefault();
 
                 //because Component is rendered twice when this event listener is triggered,
                 //In first render conversation object is empty 
                 if(Object.keys(conversation).length > 0){
-                    addMessageTile(user.username, user.pictureUrl, event.target.innerHTML, "20/09/2024 17:49");
+                    addMessageTile(user.username, user.pictureUrl, event.target.innerHTML, Date());
                     event.target.innerHTML = "";
                 }
 
@@ -114,6 +135,7 @@ const Chat = ({params})=>{
     }, [conversation]);
 
     const sendMessage = (message) =>{
+
         const new_msg = {
             message_id: 0,
             conversation_id: parseInt(conversation_id),
@@ -132,7 +154,7 @@ const Chat = ({params})=>{
                 <div className="flex-1 mx-6 flex flex-col justify-end gap-4 overflow-auto">
                     <div className="[&>div]:mt-6 max-h-full" id="chat-field">
                         {messages.map((message, index)=>{
-                            return (<MessageTile icon_url={message.picture_url} username={message.username} timestamp={message.timestamp} message={message.message} key={index}/>)
+                            return (<MessageTile icon_url={message.picture_url} username={message.username} timestamp={FormatDate.getFormatTimestamp(message.timestamp)} message={message.message} key={index}/>)
                         })}
                    </div>
                 </div>
@@ -140,7 +162,7 @@ const Chat = ({params})=>{
                 <div className="px-6 py-4 m-6 bg-gray-bg-600 rounded-lg">
                     <div className="relative z-0">
                         {/*<div className="absolute text-gray-bg-500 -z-[1]" id="text-field-placeholder">Message @Cattt</div>*/}
-                        <div id="text-field" contentEditable="true" className="text-white outline-none">
+                        <div id="text-field" contentEditable="true" className="text-white outline-none whitespace-pre-wrap">
                         </div>
                     </div>
                 </div>
@@ -156,7 +178,7 @@ const ChatHead = (props) =>{
         <div className="h-14 p-4 bg-gray-bg-700 text-gray-bg-500 flex gap-4 items-center border-b-2 border-[#202124]">
            
             <div className="flex">
-                <UserIcon icon_url={props.icon_url === ""?"/icon-cat.png":props.icon_url} online="true"/>&nbsp;&nbsp;
+                <UserIcon icon_url={(props.icon_url === "" || props.icon_url == undefined)?"/icon-cat.png":props.icon_url} online="true"/>&nbsp;&nbsp;
                 <span className="text-white font-bold leading-8">{props.username}</span>
             </div>
 
