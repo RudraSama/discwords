@@ -36,9 +36,10 @@ const Conversations = (props) =>{
                 </li>
             </ul>
 
-            <div className="w-full py-2 px-6 text-gray-bg-500 flex justify-between">
+            <div className="relative w-full py-2 px-6 text-gray-bg-500 flex justify-between">
                 <span>Direct Messages</span>
                 <button><i className="fas fa-plus text-md"/></button>
+                <CreateConversation/>
             </div>
 
             <ul className="[&>li]:w-[236px] [&>li]:my-[2px] [&>li]:mx-[6px]">
@@ -58,6 +59,16 @@ const Conversations = (props) =>{
         </div>
     );
 
+}
+
+const CreateConversation = ()=>{
+    return (
+        <div className="absolute z-10 right-0 translate-x-full bg-gray-bg-700 shadow-xl border-[1px] border-gray-bg-900 p-3">
+            <span className="text-white text-xl">Select Friends</span>
+            <div>
+            </div>
+        </div>
+    );
 }
 
 const SearchBar = () =>{
