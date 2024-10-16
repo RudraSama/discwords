@@ -71,22 +71,25 @@ const Conversations = (props) =>{
 const CreateConversation = ()=>{
 
     const {user} = useSelector((state)=>state.user);
+    const [allFriends, setAllFriends] = useState([]);
     const [friends, setFriends] = useState([]);
 
-    const [searchQuery, setSearchQuery] = useState("");
-    const filterFriends = (friends, query) => {
+    const searchFriends = (value)=>{
+        const regx = new RegExp(value+".", "i");
+        
+        const b = allFriends.filter((friend)=>{
+            return regx.test(friend.username) || value === friend.username;
+        });
 
-        return friends.filter((friends)=>{
-            const friendName = friends.user.username.toLowerCase();
-            return friendName.includes(query);
-        })               
+        setFriends(b);
 
     }
-    const filteredFriends = filterFriends(friends, searchQuery);
+
 
     useEffect(()=>{
         axios.get(`http://localhost:8080/api/fetchFriends/${user.profileId}`).then(res=>{
             if(res.data){
+                setAllFriends(res.data);
                 setFriends(res.data);
             }
         });
@@ -97,23 +100,18 @@ const CreateConversation = ()=>{
         <div className="absolute z-10 right-0 translate-x-full w-[400px] bg-gray-bg-700 shadow-xl border-[1px] border-gray-bg-900 p-3">
             <span className="text-white text-lg">Select Friends</span><br/>
             <div className="mt-3">
-                <SearchBar callback={filterFriends} searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+                <SearchBar callback={searchFriends} />
                 <hr className="mt-3 border-gray-bg-600"/>
                 <ul className="h-[200px] overflow-y-scroll">
-                   {
-                    // friends.map((friend, index)=>{
-                    //     return(
-                    //         <li key={index}>
-                    //             <SelectFriend user={friend} />
-                    //         </li>
-                    //     )
-                    // })
-                    filteredFriends.map(friend =>(
-                        <li key={friend.key}>
-                            <SelectFriend user={friend} />
-                        </li>
-                    ))
-                   }                    
+                    {
+                        friends.map((friend, index)=>{
+                            return (
+                                <li key={index}>
+                                    <SelectFriend user={friend} />
+                                </li>
+                            )
+                        })
+                    }
                 </ul>
             </div>
             <hr className="border-gray-bg-600"/>
@@ -149,7 +147,7 @@ const SearchBar = (props) =>{
 
     return(
         <div className="">
-            <input value={props.searchQuery} onChange={(e=>{props.setSearchQuery(e.target.value)})} className="p-[5px] w-full text-sm rounded-[5px] bg-gray-bg-900" placeholder="Find or start a conversation"/>
+            <input onChange={(e)=>{props.callback(e.target.value)}} className="p-[5px] w-full text-sm rounded-[5px] bg-gray-bg-900" placeholder="Find or start a conversation"/>
         </div>
     )
 }
