@@ -74,6 +74,8 @@ const CreateConversation = ()=>{
     const [allFriends, setAllFriends] = useState([]);
     const [friends, setFriends] = useState([]);
 
+    const selectedFriends = [];
+
     const searchFriends = (value)=>{
         const regx = new RegExp(value+".", "i");
         
@@ -82,7 +84,6 @@ const CreateConversation = ()=>{
         });
 
         setFriends(b);
-
     }
 
 
@@ -94,11 +95,16 @@ const CreateConversation = ()=>{
             }
         });
     }, []);
+
+    const doSomething = ()=>{
+        console.log(selectedFriends);
+    }
     
 
     return (
         <div className="absolute z-10 right-0 translate-x-full w-[400px] bg-gray-bg-700 shadow-xl border-[1px] border-gray-bg-900 p-3">
             <span className="text-white text-lg">Select Friends</span><br/>
+            <span>Group DMs not supported yet</span>
             <div className="mt-3">
                 <SearchBar callback={searchFriends} />
                 <hr className="mt-3 border-gray-bg-600"/>
@@ -107,7 +113,7 @@ const CreateConversation = ()=>{
                         friends.map((friend, index)=>{
                             return (
                                 <li key={index}>
-                                    <SelectFriend user={friend} />
+                                    <SelectFriend user={friend} selectedFriends={selectedFriends} />
                                 </li>
                             )
                         })
@@ -116,32 +122,36 @@ const CreateConversation = ()=>{
             </div>
             <hr className="border-gray-bg-600"/>
             <div className="flex justify-center pt-4">
-                <button className="bg-indigo-500 text-white w-full p-2 rounded-md hover:bg-indigo-600">Create DM</button>
+                <button className="bg-indigo-500 text-white w-full p-2 rounded-md hover:bg-indigo-600" onClick={doSomething}>Create DM</button>
             </div>
         </div>
     );
 }
 
 const SelectFriend = (props) => {
+
+    const [selected, setSelected] = useState(false);
+
+    const toggleCheckBox = ()=>{
+        setSelected(!selected);
+    }
+
+    if(selected){
+        props.selectedFriends.push(props.user);
+    }
+
     return (
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
             <div className="flex items-center">
                 <UserIcon username={props.user.username} online={true} icon_url={'/icon-cat.png'}/>
             </div>
-            {/* <StyledCheckbox/> */}
-            
+            <div className="h-6 w-6 border-[1px] border-gray-400 rounded-lg flex justify-center items-center cursor-pointer" onClick={toggleCheckBox}>
+                {selected?<span className="text-blue-400 text-xl">&#10003;</span>:""}
+            </div>
         </div>
     )
 }
 
-const StyledCheckbox = () =>{
-    return (
-        <div className="w-5 p-2 flex justify-center items-center">
-            <input type="checkbox" className="opacity-0 relative"/>
-            <span className="w-5 absolute border border-gray-bg-500 rounded-md"><i className="fas fa-check text-md text-blue-800"/></span>
-        </div>
-    )
-}
 
 const SearchBar = (props) =>{
 
