@@ -9,9 +9,14 @@ const Conversations = (props) =>{
 
     const [conversations, setConversations] = useState([]);
     const {user} = useSelector((state)=>state.user);
+    const [createConvBox, setCreateConvBox] = useState(false);
 
+    const toggleCreateConvBox = () => {
+        setCreateConvBox(!createConvBox);
+    }
 
     useEffect(()=>{
+        
         axios.get(`http://localhost:8080/api/fetchConversations/${user.profileId}`).then(res=>{
             if(res.data){
                 setConversations(res.data);
@@ -20,11 +25,12 @@ const Conversations = (props) =>{
     },[]);
 
 
-    return(
-        <div className="h-screen w-[250px] bg-gray-bg-800">
-            <SearchBar/>
 
-            <ul className="[&>li]:w-[236px] [&>li]:my-[2px] [&>li]:mx-[6px]">
+    return(
+        <div className="h-screen w-[250px] bg-gray-bg-800 p-3">
+            <SearchBar/>
+            <hr className="mt-3 border border-gray-bg-900"/>
+            <ul className="my-2 [&>li]:w-[236px] [&>li]:my-[2px] [&>li]:mx-[px]">
                 <li>
                     <Friends active={props.active?false:true}/>
                 </li>
@@ -38,8 +44,9 @@ const Conversations = (props) =>{
 
             <div className="relative w-full py-2 px-6 text-gray-bg-500 flex justify-between">
                 <span>Direct Messages</span>
-                <button><i className="fas fa-plus text-md"/></button>
-                <CreateConversation/>
+                <button onClick={toggleCreateConvBox}><i className="fas fa-plus text-md"/></button>
+                {createConvBox?<div onClick={toggleCreateConvBox} className="fixed w-screen h-screen bg-transparent z-[5] top-0 left-0"></div>:""}
+                {createConvBox?<CreateConversation/>:""}
             </div>
 
             <ul className="[&>li]:w-[236px] [&>li]:my-[2px] [&>li]:mx-[6px]">
@@ -62,29 +69,97 @@ const Conversations = (props) =>{
 }
 
 const CreateConversation = ()=>{
+
+    const {user} = useSelector((state)=>state.user);
+    const [friends, setFriends] = useState([]);
+
+    const [searchQuery, setSearchQuery] = useState("");
+    const filterFriends = (friends, query) => {
+
+        return friends.filter((friends)=>{
+            const friendName = friends.user.username.toLowerCase();
+            return friendName.includes(query);
+        })               
+
+    }
+    const filteredFriends = filterFriends(friends, searchQuery);
+
+    useEffect(()=>{
+        axios.get(`http://localhost:8080/api/fetchFriends/${user.profileId}`).then(res=>{
+            if(res.data){
+                setFriends(res.data);
+            }
+        });
+    }, []);
+    
+
     return (
-        <div className="absolute z-10 right-0 translate-x-full bg-gray-bg-700 shadow-xl border-[1px] border-gray-bg-900 p-3">
-            <span className="text-white text-xl">Select Friends</span>
-            <div>
+        <div className="absolute z-10 right-0 translate-x-full w-[400px] bg-gray-bg-700 shadow-xl border-[1px] border-gray-bg-900 p-3">
+            <span className="text-white text-lg">Select Friends</span><br/>
+            <div className="mt-3">
+                <SearchBar callback={filterFriends} searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+                <hr className="mt-3 border-gray-bg-600"/>
+                <ul className="h-[200px] overflow-y-scroll">
+                   {
+                    // friends.map((friend, index)=>{
+                    //     return(
+                    //         <li key={index}>
+                    //             <SelectFriend user={friend} />
+                    //         </li>
+                    //     )
+                    // })
+                    filteredFriends.map(friend =>(
+                        <li key={friend.key}>
+                            <SelectFriend user={friend} />
+                        </li>
+                    ))
+                   }                    
+                </ul>
+            </div>
+            <hr className="border-gray-bg-600"/>
+            <div className="flex justify-center pt-4">
+                <button className="bg-indigo-500 text-white w-full p-2 rounded-md hover:bg-indigo-600">Create DM</button>
             </div>
         </div>
     );
 }
 
-const SearchBar = () =>{
-
-    return(
-        <div className="border-b-2 border-[#202124] p-3">
-            <input className="p-[5px] w-full text-sm rounded-[5px] bg-gray-bg-900" placeholder="Find or start a conversation"/>
+const SelectFriend = (props) => {
+    return (
+        <div className="flex justify-between">
+            <div className="flex items-center">
+                <UserIcon username={props.user.username} online={true} icon_url={'/icon-cat.png'}/>
+            </div>
+            {/* <StyledCheckbox/> */}
+            
         </div>
     )
 }
+
+const StyledCheckbox = () =>{
+    return (
+        <div className="w-5 p-2 flex justify-center items-center">
+            <input type="checkbox" className="opacity-0 relative"/>
+            <span className="w-5 absolute border border-gray-bg-500 rounded-md"><i className="fas fa-check text-md text-blue-800"/></span>
+        </div>
+    )
+}
+
+const SearchBar = (props) =>{
+
+    return(
+        <div className="">
+            <input value={props.searchQuery} onChange={(e=>{props.setSearchQuery(e.target.value)})} className="p-[5px] w-full text-sm rounded-[5px] bg-gray-bg-900" placeholder="Find or start a conversation"/>
+        </div>
+    )
+}
+
 
 const Friends = (props) => {
     
     return (
         <Link href="/channels/me">
-            <div className={"w-auto h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#36373D] hover:text-white " + (props.active?"text-white bg-gray-bg-600":"text-gray-bg-500")}> <i className=" mx-3 fas fa-users text-xl w-10"/> Friends</div>
+            <div className={"w-[225px] h-8 py-5 flex items-center rounded-md hover:bg-[#36373D] hover:text-white " + (props.active?"text-white bg-gray-bg-600":"text-gray-bg-500")}> <i className=" mx-3 fas fa-users text-xl w-10"/> Friends</div>
         </Link>
     )
 }
@@ -92,7 +167,7 @@ const Nitro = (props) => {
     
     return (
         <Link href="/nitro">
-            <div className={"w-auto h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#36373D] hover:text-white " + (props.active?"text-white bg-gray-bg-600":"text-gray-bg-500")}> <i className=" mx-3 fas fa-car text-xl w-10 text-[22px]"/> Nitro</div>
+            <div className={"w-[225px] h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#36373D] hover:text-white " + (props.active?"text-white bg-gray-bg-600":"text-gray-bg-500")}> <i className=" mx-3 fas fa-car text-xl w-10 text-[22px]"/> Nitro</div>
         </Link>
     )
 }
@@ -100,7 +175,7 @@ const Shop = (props) => {
 
     return (
         <Link href="/shop">
-            <div className={"w-auto h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#36373D] hover:text-white " + (props.active?"text-white bg-gray-bg-600":"text-gray-bg-500")}> <i className=" mx-3 fas fa-shop text-xl  w-10"/> Shop</div>
+            <div className={"w-[225px] h-8 px-2 py-5 flex items-center rounded-md hover:bg-[#36373D] hover:text-white " + (props.active?"text-white bg-gray-bg-600":"text-gray-bg-500")}> <i className=" mx-3 fas fa-shop text-xl  w-10"/> Shop</div>
         </Link>
     )
 }
