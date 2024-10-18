@@ -1,8 +1,8 @@
 "use client"
 import {useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 import Image from 'next/image';
+import {axiosConfig} from '../../../lib/utils';
 
 const Me = ()=>{
 
@@ -86,6 +86,7 @@ const AllFriends = ()=>{
     
     const {user} = useSelector((state)=>state.user);
     const [friends, setFriends] = useState([]);
+    const axios = axiosConfig();
 
     useEffect(()=>{
         axios.get(`http://localhost:8080/api/fetchFriends/${user.profileId}`).then(res=>{
@@ -131,6 +132,7 @@ const FriendTile = (props)=>{
 const PendingRequests = () =>{
 
     const {user} = useSelector((state)=>state.user);
+    const axios = axiosConfig();
 
     const [incomingFriendRequests, setIncomingFriendRequests] = useState([]);
     const [outgoingFriendRequests, setOutgoingFriendRequests] = useState([]);
@@ -246,8 +248,9 @@ const FriendRequestTile = (props)=>{
 
 const AddFriend = ()=>{
 
-    const [friendUsername, setFrienddUsername] = useState("");
+    const axios = axiosConfig();
 
+    const [friendUsername, setFrienddUsername] = useState("");
     const [response, setResponse] = useState("");
 
     const handleUsernameChange = (event)=>{

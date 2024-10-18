@@ -28,7 +28,7 @@ const Signup = ()=>{
         const token = response.credential;
         
         try {
-            const res = await axios.post('http://localhost:8080/api/signupUserWithGoogle', {tokenId: token});
+            const res = await axios.post('http://localhost:8080/signupUserWithGoogle', {tokenId: token});
             console.log(res.data);
         } catch (error) {
             console.log(error);
@@ -45,7 +45,7 @@ const Signup = ()=>{
                 password: password
             };
 
-            const response = await axios.post("http://localhost:8080/api/registerUser", credentials);
+            const response = await axios.post("http://localhost:8080/registerUser", credentials);
             
             if(response.data){
                 console.log(response.data);

@@ -1,21 +1,10 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import {axiosConfig} from '../utils';
 
 export const fetchUserByToken = createAsyncThunk("userSlice/fetchUserByToken", async ()=>{
     
-    const token = Cookies.get("token");
-
-    if(token == undefined)
-        return {auth: false};
-
-    const headers = {
-        "x-access-token": token 
-    };
-
-    const res = await axios.get("http://localhost:8080/api/checkAuthorization", {
-        headers: headers
-    });
+    const axios = axiosConfig();
+    const res = await axios.get("http://localhost:8080/api/checkAuthorization");
 
     if(res.data.error){
         return {auth : false}

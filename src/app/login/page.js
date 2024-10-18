@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import {useRouter} from 'next/navigation';
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import {axiosConfig} from '../../lib/utils';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchUserByToken, setUser} from '../../lib/features/userSlice';
@@ -33,7 +32,7 @@ const Login = ()=>{
     const handleLogin = async(event) => {
         event.preventDefault();
 
-        const res = await axios.post('http://localhost:8080/api/loginUser', {
+        const res = await axios.post('http://localhost:8080/loginUser', {
                email: email,
                password: password
         });
@@ -52,7 +51,7 @@ const Login = ()=>{
         const token = response.credential;
 
         try{
-            const res = await axios.post('http://localhost:8080/api/loginUserWithGoogle', {tokenId: token});
+            const res = await axios.post('http://localhost:8080/loginUserWithGoogle', {tokenId: token});
 
             if(res.data.profile){
                 dispatch(setUser(res.data.user));

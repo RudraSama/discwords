@@ -1,12 +1,14 @@
 
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
-import UserIcon from "./UserIcon";
+import UserIcon from './UserIcon';
 import {useSelector} from 'react-redux';
-import axios from 'axios';
+import {useRouter} from 'next/navigation'
+import {axiosConfig} from '../lib/utils';
 
 const Conversations = (props) =>{
 
+    const axios = axiosConfig();
     const [conversations, setConversations] = useState([]);
     const {user} = useSelector((state)=>state.user);
     const [createConvBox, setCreateConvBox] = useState(false);
@@ -70,6 +72,8 @@ const Conversations = (props) =>{
 
 const CreateConversation = ()=>{
 
+    const axios = axiosConfig();
+    const route = useRouter();
     const {user} = useSelector((state)=>state.user);
     const [allFriends, setAllFriends] = useState([]);
     const [friends, setFriends] = useState([]);
@@ -96,10 +100,21 @@ const CreateConversation = ()=>{
         });
     }, []);
 
-    const doSomething = ()=>{
-        console.log(selectedFriends);
+    const createDM = ()=>{
+
+        axios.post("http://localhost:8080/api/createConversation", {
+            profile_id1: user.profileId,
+            profile_id2: selectedFriends[0].profileId
+        }).then(res=>{
+            if(res.data){
+                if(res.data.conversation_id){
+                    route.push(`/channels/me/${res.data.conversation_id}`);
+                }
+            }
+        });
     }
-    
+
+ 
 
     return (
         <div className="absolute z-10 right-0 translate-x-full w-[400px] bg-gray-bg-700 shadow-xl border-[1px] border-gray-bg-900 p-3">
@@ -122,7 +137,7 @@ const CreateConversation = ()=>{
             </div>
             <hr className="border-gray-bg-600"/>
             <div className="flex justify-center pt-4">
-                <button className="bg-indigo-500 text-white w-full p-2 rounded-md hover:bg-indigo-600" onClick={doSomething}>Create DM</button>
+                <button className="bg-indigo-500 text-white w-full p-2 rounded-md hover:bg-indigo-600" onClick={createDM}>Create DM</button>
             </div>
         </div>
     );
@@ -136,8 +151,19 @@ const SelectFriend = (props) => {
         setSelected(!selected);
     }
 
+    const deleteElement = (array, user)=>{
+        array.map((ele, index)=>{
+            if(ele.username === user.username){
+                array.splice(index, 1);
+            }
+        });
+    }
+
     if(selected){
         props.selectedFriends.push(props.user);
+    }
+    else{
+        deleteElement(props.selectedFriends, props.user);
     }
 
     return (

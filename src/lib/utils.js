@@ -1,3 +1,6 @@
+import axios from 'axios';
+import Cookies from 'js-cookie';
+
 const FormatDate = {
     getFormatTimestamp: (date)=>{
         const d = new Date(date);
@@ -16,4 +19,11 @@ const FormatDate = {
 }
 
 
-module.exports = {FormatDate};
+const axiosConfig = ()=>{
+    const instance = axios.create();
+    instance.defaults.headers.common['x-access-token'] = Cookies.get("token");
+    return instance;
+}
+
+
+module.exports = {FormatDate, axiosConfig};
