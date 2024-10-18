@@ -89,7 +89,7 @@ const AllFriends = ()=>{
     const axios = axiosConfig();
 
     useEffect(()=>{
-        axios.get(`http://localhost:8080/api/fetchFriends/${user.profileId}`).then(res=>{
+        axios.get(`http://localhost:8080/api/fetchFriends`).then(res=>{
             if(res.data){
                 setFriends(res.data);
             }
@@ -143,13 +143,14 @@ const PendingRequests = () =>{
                  state.splice(index, 1);
             }
         });
-
         return state;
     }
 
-    const handleAcceptRequest = async(id)=>{
+    const handleAcceptRequest = async(id, sender_id)=>{
 
-        const res = await axios.post(`http://localhost:8080/api/acceptFriendRequest/${id}`);
+        
+
+        const res = await axios.post(`http://localhost:8080/api/acceptFriendRequest/${sender_id}`);
 
         if(res.data === "success"){
             const arr = removeFriendRequestFromState(incomingFriendRequests, id);
@@ -159,9 +160,10 @@ const PendingRequests = () =>{
 
     }
 
-    const handleRejectRequest = async(id, incoming = false)=>{
+    const handleRejectRequest = async(id, profile_id, incoming = false)=>{
 
-        const res = await axios.post(`http://localhost:8080/api/rejectFriendRequest/${id}`);
+        const res = await axios.post(`http://localhost:8080/api/rejectFriendRequest/${profile_id}`);
+        //profile_d here can be either of sender's or receiver's.
 
         if(res.data === "success"){
             if(incoming){
@@ -179,7 +181,7 @@ const PendingRequests = () =>{
     
     useEffect(()=>{
 
-        axios.get(`http://localhost:8080/api/fetchFriendRequests/${user.profileId}`).then(res=>{
+        axios.get(`http://localhost:8080/api/fetchFriendRequests`).then(res=>{
             res.data.map((item)=>{
                 if(item.sender_id == user.profileId){
                     outgoingFriendRequests.push(item);
@@ -234,11 +236,11 @@ const FriendRequestTile = (props)=>{
 
             <div className="flex gap-2 ml-auto my-auto">
                 {props.incoming?(
-                    <button onClick={()=>{props.callbacks.acceptRequest(props.request.id)}} className="bg-gray-bg-900 rounded-full py-2 px-2.5">
+                    <button onClick={()=>{props.callbacks.acceptRequest(props.request.id, props.request.sender_id)}} className="bg-gray-bg-900 rounded-full py-2 px-2.5">
                         <i className="fa-solid fa-check fa-xl text-gray-400 hover:text-green-400" />
                     </button>
                 ):""}
-                <button onClick={()=>{props.callbacks.rejectRequest(props.request.id, props.incoming)}} className="bg-gray-bg-900 rounded-full py-2 px-2.5">
+                <button onClick={()=>{props.callbacks.rejectRequest(props.request.id, props.incoming?props.request.sender_id:props.request.receiver_id, props.incoming)}} className="bg-gray-bg-900 rounded-full py-2 px-2.5">
                     <i className="fa-solid fa-xmark fa-xl text-gray-400 hover:text-red-600" />
                 </button>
             </div>

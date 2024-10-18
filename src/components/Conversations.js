@@ -19,7 +19,7 @@ const Conversations = (props) =>{
 
     useEffect(()=>{
         
-        axios.get(`http://localhost:8080/api/fetchConversations/${user.profileId}`).then(res=>{
+        axios.get(`http://localhost:8080/api/fetchConversations`).then(res=>{
             if(res.data){
                 setConversations(res.data);
             }
@@ -92,7 +92,7 @@ const CreateConversation = ()=>{
 
 
     useEffect(()=>{
-        axios.get(`http://localhost:8080/api/fetchFriends/${user.profileId}`).then(res=>{
+        axios.get(`http://localhost:8080/api/fetchFriends`).then(res=>{
             if(res.data){
                 setAllFriends(res.data);
                 setFriends(res.data);
@@ -103,8 +103,7 @@ const CreateConversation = ()=>{
     const createDM = ()=>{
 
         axios.post("http://localhost:8080/api/createConversation", {
-            profile_id1: user.profileId,
-            profile_id2: selectedFriends[0].profileId
+            profile_id1: selectedFriends[0].profileId
         }).then(res=>{
             if(res.data){
                 if(res.data.conversation_id){

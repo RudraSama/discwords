@@ -58,11 +58,11 @@ const Chat = ({params})=>{
 
     useEffect(()=>{
 
-        axios.get(`http://localhost:8080/api/fetchConversation/${conversation_id}/${user.profileId}`).then(res=>{
+        axios.get(`http://localhost:8080/api/fetchConversation/${conversation.friend_profile.profileId}`).then(res=>{
             if(res.data){
                 setConversation(res.data);
 
-                axios.get(`http://localhost:8080/api/fetchMessages/conversation/${res.data.conversation_id}`).then(res=>{
+                axios.get(`http://localhost:8080/api/fetchMessages/conversation/${res.data.friend_profile.profileId}`).then(res=>{
                     if(res.data){
                         res.data.map((message)=>{
                             const messageObj = {
