@@ -58,7 +58,7 @@ const Chat = ({params})=>{
 
     useEffect(()=>{
 
-        axios.get(`http://localhost:8080/api/fetchConversation/${conversation.friend_profile.profileId}`).then(res=>{
+        axios.get(`http://localhost:8080/api/fetchConversation/${conversation_id}`).then(res=>{
             if(res.data){
                 setConversation(res.data);
 
@@ -72,8 +72,7 @@ const Chat = ({params})=>{
                                 message: message.message
                             };
                             messages.push(messageObj);
-                            setMessage([...messages]);
-                        });
+                            setMessage([...messages]);2
                     }
                 });
             }
