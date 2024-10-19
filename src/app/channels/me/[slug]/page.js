@@ -62,7 +62,7 @@ const Chat = ({params})=>{
             if(res.data){
                 setConversation(res.data);
 
-                axios.get(`http://localhost:8080/api/fetchMessages/conversation/${res.data.friend_profile.profileId}`).then(res=>{
+                axios.get(`http://localhost:8080/api/fetchMessages/conversation/${conversation_id}`).then(res=>{
                     if(res.data){
                         res.data.map((message)=>{
                             const messageObj = {
