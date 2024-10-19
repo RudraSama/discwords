@@ -6,11 +6,11 @@ export const fetchUserByToken = createAsyncThunk("userSlice/fetchUserByToken", a
     const axios = axiosConfig();
     const res = await axios.get("http://localhost:8080/api/checkAuthorization");
 
-    if(res.data.error){
-        return {auth : false}
+    if(res.data.profileId){
+        return {user: res.data, auth: true};
     }
     
-    return {user: res.data, auth: true};
+    return {auth : false}
 
 });
 
