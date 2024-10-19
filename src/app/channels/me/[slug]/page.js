@@ -6,13 +6,14 @@ import {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import { Stomp } from "@stomp/stompjs";
 import {useSelector} from 'react-redux';
-import axios from 'axios';
-import {FormatDate} from '../../../../lib/utils';
+import {FormatDate, axiosConfig} from '../../../../lib/utils';
+
 
 const Chat = ({params})=>{
 
     const router = useRouter();
     const conversation_id = params.slug;
+    const axios = axiosConfig();
 
     const {user} = useSelector((state)=>state.user);
     
@@ -58,7 +59,7 @@ const Chat = ({params})=>{
 
     useEffect(()=>{
 
-        axios.get(`http://localhost:8080/api/fetchConversation/${conversation.friend_profile.profileId}`).then(res=>{
+        axios.get(`http://localhost:8080/api/fetchConversation/${conversation_id}`).then(res=>{
             if(res.data){
                 setConversation(res.data);
 

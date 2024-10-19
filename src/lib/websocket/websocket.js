@@ -16,7 +16,7 @@ class StompClientSingleton{
             this.client = new Client({
                 brokerURL: url,
                 connectHeaders: {
-                    access_token: token,
+                    "x-access-token": token,
                 }
             });
             

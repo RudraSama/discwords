@@ -5,7 +5,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import {useRouter} from 'next/navigation';
 import {axiosConfig} from '../../lib/utils';
-
+import Cookies from 'js-cookie';
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchUserByToken, setUser} from '../../lib/features/userSlice';
 
@@ -13,7 +13,7 @@ import {fetchUserByToken, setUser} from '../../lib/features/userSlice';
 const Login = ()=>{
     
     const router = useRouter();
-
+    const axios = axiosConfig();
     const {user, authenticated, loading} = useSelector((state)=>state.user);
     const dispatch = useDispatch();
 
