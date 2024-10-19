@@ -86,7 +86,7 @@ const AllFriends = ()=>{
     
     const {user} = useSelector((state)=>state.user);
     const [friends, setFriends] = useState([]);
-    const axios = axiosConfig();
+    const axios = axiosConfig(user);
 
     useEffect(()=>{
         axios.get(`http://localhost:8080/api/fetchFriends`).then(res=>{
@@ -132,7 +132,7 @@ const FriendTile = (props)=>{
 const PendingRequests = () =>{
 
     const {user} = useSelector((state)=>state.user);
-    const axios = axiosConfig();
+    const axios = axiosConfig(user);
 
     const [incomingFriendRequests, setIncomingFriendRequests] = useState([]);
     const [outgoingFriendRequests, setOutgoingFriendRequests] = useState([]);
@@ -250,7 +250,8 @@ const FriendRequestTile = (props)=>{
 
 const AddFriend = ()=>{
 
-    const axios = axiosConfig();
+    const {user} = useSelector((state)=> state.user);
+    const axios = axiosConfig(user);
 
     const [friendUsername, setFrienddUsername] = useState("");
     const [response, setResponse] = useState("");
@@ -259,7 +260,6 @@ const AddFriend = ()=>{
         setFrienddUsername(event.target.value);
     }
 
-    const {user} = useSelector((state)=> state.user);
 
     const handleFriendRequest = async() =>{
 

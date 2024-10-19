@@ -8,9 +8,9 @@ import {axiosConfig} from '../lib/utils';
 
 const Conversations = (props) =>{
 
-    const axios = axiosConfig();
-    const [conversations, setConversations] = useState([]);
     const {user} = useSelector((state)=>state.user);
+    const axios = axiosConfig(user);
+    const [conversations, setConversations] = useState([]);
     const [createConvBox, setCreateConvBox] = useState(false);
 
     const toggleCreateConvBox = () => {
@@ -72,9 +72,9 @@ const Conversations = (props) =>{
 
 const CreateConversation = ()=>{
 
-    const axios = axiosConfig();
-    const route = useRouter();
     const {user} = useSelector((state)=>state.user);
+    const axios = axiosConfig(user);
+    const route = useRouter();
     const [allFriends, setAllFriends] = useState([]);
     const [friends, setFriends] = useState([]);
 
