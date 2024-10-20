@@ -1,7 +1,6 @@
 "use client"
 import StoreProvider from '../../lib/StoreProvider';
 import Servers from '../../components/Servers';
-import Conversations from '../../components/Conversations';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -37,7 +36,6 @@ const Layout = ({children})=>{
     return (
         <main className='flex'>
             <Servers/>
-            <Conversations/>
             {children}
         </main>
     );

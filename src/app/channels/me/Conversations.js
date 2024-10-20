@@ -1,10 +1,10 @@
 
 import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
-import UserIcon from './UserIcon';
+import UserIcon from '../../../components/UserIcon';
 import {useSelector} from 'react-redux';
 import {useRouter} from 'next/navigation'
-import {axiosConfig} from '../lib/utils';
+import {axiosConfig} from '../../../lib/utils';
 
 const Conversations = (props) =>{
 
@@ -29,7 +29,7 @@ const Conversations = (props) =>{
 
 
     return(
-        <div className="h-screen w-[250px] bg-gray-bg-800 p-3">
+        <>
             <SearchBar/>
             <hr className="mt-3 border border-gray-bg-900"/>
             <ul className="my-2 [&>li]:w-[236px] [&>li]:my-[2px] [&>li]:mx-[px]">
@@ -65,7 +65,7 @@ const Conversations = (props) =>{
                 })}
 
             </ul>
-        </div>
+        </>
     );
 
 }
@@ -102,9 +102,7 @@ const CreateConversation = ()=>{
 
     const createDM = ()=>{
 
-        axios.post("http://localhost:8080/api/createConversation", {
-            profile_id1: selectedFriends[0].profileId
-        }).then(res=>{
+        axios.post(`http://localhost:8080/api/createConversation/${selectedFriends[0].profileId}`).then(res=>{
             if(res.data){
                 if(res.data.conversation_id){
                     route.push(`/channels/me/${res.data.conversation_id}`);

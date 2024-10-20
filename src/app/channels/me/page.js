@@ -27,7 +27,7 @@ const NavBar = (props) =>{
     }
 
     return (
-        <div className="h-14 p-4 bg-gray-bg-700  text-gray-bg-500 flex gap-4 border-b-2 border-gray-bg-800">
+        <div className="w-full h-14 p-4 bg-gray-bg-700  text-gray-bg-500 flex gap-4 border-b-2 border-gray-bg-800">
             <span className="text-white"><i className=" mx-3 fas fa-users text-gray-bg-500 text-xl w-6"/>Friends</span>
             <div className="w-[1px] bg-gray-bg-600 h-6"></div>
             <div className="flex gap-6 [&>button]:rounded-md hover:[&>button]:bg-gray-bg-600 hover:[&>button]:text-white [&>button]:px-2 [&>button]:text-md">
@@ -146,11 +146,11 @@ const PendingRequests = () =>{
         return state;
     }
 
-    const handleAcceptRequest = async(id, sender_id)=>{
+    const handleAcceptRequest = async(id)=>{
 
         
 
-        const res = await axios.post(`http://localhost:8080/api/acceptFriendRequest/${sender_id}`);
+        const res = await axios.post(`http://localhost:8080/api/acceptFriendRequest/${id}`);
 
         if(res.data === "success"){
             const arr = removeFriendRequestFromState(incomingFriendRequests, id);
@@ -160,10 +160,10 @@ const PendingRequests = () =>{
 
     }
 
-    const handleRejectRequest = async(id, profile_id, incoming = false)=>{
+    const handleRejectRequest = async(id, incoming = false)=>{
 
-        const res = await axios.post(`http://localhost:8080/api/rejectFriendRequest/${profile_id}`);
         //profile_d here can be either of sender's or receiver's.
+        const res = await axios.post(`http://localhost:8080/api/rejectFriendRequest/${id}`);
 
         if(res.data === "success"){
             if(incoming){
@@ -236,11 +236,11 @@ const FriendRequestTile = (props)=>{
 
             <div className="flex gap-2 ml-auto my-auto">
                 {props.incoming?(
-                    <button onClick={()=>{props.callbacks.acceptRequest(props.request.id, props.request.sender_id)}} className="bg-gray-bg-900 rounded-full py-2 px-2.5">
+                    <button onClick={()=>{props.callbacks.acceptRequest(props.request.id)}} className="bg-gray-bg-900 rounded-full py-2 px-2.5">
                         <i className="fa-solid fa-check fa-xl text-gray-400 hover:text-green-400" />
                     </button>
                 ):""}
-                <button onClick={()=>{props.callbacks.rejectRequest(props.request.id, props.incoming?props.request.sender_id:props.request.receiver_id, props.incoming)}} className="bg-gray-bg-900 rounded-full py-2 px-2.5">
+                <button onClick={()=>{props.callbacks.rejectRequest(props.request.id, props.incoming)}} className="bg-gray-bg-900 rounded-full py-2 px-2.5">
                     <i className="fa-solid fa-xmark fa-xl text-gray-400 hover:text-red-600" />
                 </button>
             </div>
@@ -263,11 +263,7 @@ const AddFriend = ()=>{
 
     const handleFriendRequest = async() =>{
 
-        const res = await axios.post("http://localhost:8080/api/addFriend", {
-            //in future instead of profile id  send web token to keep it secure
-            profile_id: user.profileId,
-            username: friendUsername,
-        });
+        const res = await axios.post(`http://localhost:8080/api/addFriend/${friendUsername}`);
         setResponse(res.data);
     }
 

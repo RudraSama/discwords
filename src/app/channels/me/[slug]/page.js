@@ -12,10 +12,10 @@ import {FormatDate, axiosConfig} from '../../../../lib/utils';
 const Chat = ({params})=>{
 
     const router = useRouter();
-    const conversation_id = params.slug;
-    const axios = axiosConfig();
-
     const {user} = useSelector((state)=>state.user);
+    const conversation_id = params.slug;
+    const axios = axiosConfig(user);
+
     
 
     /*
@@ -49,7 +49,7 @@ const Chat = ({params})=>{
             message: message
         };
 
-        messages.push(messageObj)
+        messages.push(messageObj);
 
         setMessage([...messages]);
         sendMessage(message);
@@ -73,7 +73,8 @@ const Chat = ({params})=>{
                                 message: message.message
                             };
                             messages.push(messageObj);
-                            setMessage([...messages]);2
+                            setMessage([...messages]);
+                        });
                     }
                 });
             }
