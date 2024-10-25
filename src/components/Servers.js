@@ -1,22 +1,56 @@
-import React from "react"
-import ServerPic from "./ServerPic";
+"use client"
+
+import React, {useState, useEffect} from 'react';
+import Image from 'next/image';
+import {useSelector} from 'react-redux';
+import {axiosConfig} from './../lib/utils';
+import {useRouter} from 'next/navigation';
 
 const Servers = () =>{
+    
+    const {user} = useSelector((state)=>state.user);
+    const axios = axiosConfig(user);
+
+    const [servers, setServers] = useState([]);
+
+
+    useEffect(()=>{
+        axios.get("http://localhost:8080/api/getServers").then(res=>{
+            if(res.data){
+                setServers(res.data);
+            }
+        });
+    },[]);
+
     return(
         <div className="w-18 h-screen bg-[#1e1f22] flex flex-col px-3">
             
-            <ServerPic active={true} type="dm"/>
+            <ServerIcon active={true} type="dm"/>
             <hr className="border-gray-bg-800 border-[1px] w-[32px] mx-auto rounded-md"/>
-            <ServerPic active={false}/>
-            <ServerPic active ={false}/>
-            <ServerPic active ={false}/>
-            <ServerPic active ={false}/>
-            <ServerPic active ={false}/>
+            {servers.map((server, index)=>{
+                return (<ServerIcon active={false} serverId={server.server_id} key={index}/>)
+            })}
             <hr className="border-gray-bg-800 border-[1px] w-[32px] mx-auto rounded-md"/>
             <AddNewServer/>
             
         </div>
     );
+}
+
+const ServerIcon = (props) => {
+
+    const router = useRouter();
+    const activeClass = "h-2 w-1 bg-white rounded-[30%] transition-all group-hover:h-5";
+
+    return (
+        <div id="server" className="my-2 relative flex items-center group" onClick={()=>{router.push("/channels/"+props.serverId)}}>
+            <span id="activeServer" className={props.active?activeClass:""}></span>
+
+            <div className=" w-full hover:transition-all">
+                <Image src={props.type==='dm'?'/dm.jpg':'/discord_server.webp'} className={"rounded-[100%] mx-auto transition-all group-hover:rounded-[30%] hover:cursor-pointer"} width={48} height={48} alt="server pic" />
+            </div>
+        </div>
+    )
 }
 
 const AddNewServer = () =>{

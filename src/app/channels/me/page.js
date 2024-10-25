@@ -2,6 +2,7 @@
 import {useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import Image from 'next/image';
+import MainWindow from '../../../components/MainWindow';
 import {axiosConfig} from '../../../lib/utils';
 
 const Me = ()=>{
@@ -15,7 +16,26 @@ const Me = ()=>{
     return (
         <div className="w-full">
             <NavBar changeNavOptionCallback={changeNavOption}/>
-            <Activity type={navOption}/>
+            <MainWindow>
+                <div className="w-full border-r-[1px] border-gray-bg-600 py-4 px-8 flex flex-col">
+                  
+                    {navOption === "all"?
+                            <AllFriends/>:
+                            navOption === "online"?
+                            <OnlineFriends/>:
+                            navOption === "pending"?
+                            <PendingRequests/>:
+                            navOption === "blocked"?
+                            <div>Blocked Requests</div>:
+                            navOption === "addFriend"?
+                            <AddFriend/>:""
+                    }
+                    
+                </div>
+
+                <Activity />
+
+            </MainWindow>
         </div>
     );
 }
@@ -50,21 +70,6 @@ const NavBar = (props) =>{
 const Activity = (props) =>{
     return (
         <div className="bg-gray-bg-700 h-[calc(100vh-56px)] flex">
-            <div className="w-full border-r-[1px] border-gray-bg-600 py-4 px-8 flex flex-col">
-              
-                {props.type === "all"?
-                        <AllFriends/>:
-                        props.type === "online"?
-                        <OnlineFriends/>:
-                        props.type === "pending"?
-                        <PendingRequests/>:
-                        props.type === "blocked"?
-                        <div>Blocked Requests</div>:
-                        props.type === "addFriend"?
-                        <AddFriend/>:""
-                }
-                
-            </div>
             <div className="w-[500px] py-6 px-4 flex flex-col gap-8">
                 <span className="text-xl font-bold text-white">Active Now</span>
                 <div className="flex justify-center">
