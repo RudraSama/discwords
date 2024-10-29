@@ -45,7 +45,7 @@ const Channels = (props)=>{
                 <button className="flex gap-3 items-center "><i className="fas fa-angle-down text-sm"/>text channels</button>
                 <div className="flex text-[16px]">
                     {channels.map((channel, index)=>{
-                        return (channel.channel_type === "TEXT"?<Channel serverId={props.serverId} channel_name={channel.channel_name} channel_id={channel.channel_id} key={index}/>:"")
+                        return (channel.channel_type === "TEXT"?<Channel serverId={props.serverId} channel_name={channel.channel_name} channel_id={channel.channel_id} key={index} highlight={props.channelId == channel.channel_id}  />:"")
                     })} 
                 </div>
             </div>
@@ -53,7 +53,7 @@ const Channels = (props)=>{
                 <button className="flex gap-3 items-center "><i className="fas fa-angle-down text-sm"/>voice channels</button>
                 <div className="flex text-[16px]">
                     {channels.map((channel, index)=>{
-                        return (channel.channel_type === "VOICE"?<Channel serverId={props.serverId} channel_name={channel.channel_name} channel_id={channel.channel_id} key={index}/>:"")
+                        return (channel.channel_type === "VOICE"?<Channel serverId={props.serverId} channel_name={channel.channel_name} channel_id={channel.channel_id} key={index}  highlight={props.channelId == channel.channel_id}/>:"")
                     })} 
                 </div>
             </div>
@@ -64,7 +64,7 @@ const Channels = (props)=>{
 
 const Channel = (props)=>{
     return (
-        <Link href={`/channels/${props.serverId}/${props.channel_id}`} className=" w-full flex justify-between rounded-md px-2 py-1 hover:bg-gray-bg-600 transition-all hover:text-white">
+        <Link href={`/channels/${props.serverId}/${props.channel_id}`} className={"w-full flex justify-between rounded-md px-2 py-1 hover:bg-gray-bg-600 transition-all hover:text-white "+(props.highlight?"bg-gray-bg-600":"")}>
             <span><i className="fas fa-hashtag text-xl mx-2"/>{props.channel_name}</span>
             <div className="flex">
                 <button><i className="fas fa-users text-sm mx-2"/></button>

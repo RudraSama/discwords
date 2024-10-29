@@ -1,17 +1,27 @@
 "use client"
 import {useState, useEffect} from 'react';
 import MainWindow from '../../../components/MainWindow';
+import MemberList from './MemberList';
 import {FormatDate} from '../../../lib/utils';
 import Image from 'next/image';
 
 const Server = ()=>{
 
+    const [memberListWindow, setMemberListWindow] = useState(false);
+
+    const toggleMemberList = ()=>{
+        setMemberListWindow(!memberListWindow);
+    }
+
     return (
         <div className="w-full">
-            <NavBar channelName="general"/>
+            <NavBar channelName="general" callbacks={
+                {memberList: toggleMemberList}
+            }/>
 
             <MainWindow>
                 <ChatArea />
+                {memberListWindow?<MemberList/>:""}
             </MainWindow>
         </div>
     );
@@ -27,12 +37,12 @@ const NavBar = (props)=>{
                 <span className="font-bold text-gray-200">&nbsp;&nbsp;{props.channelName}</span>
             </div>
 
-            <div className="[&>i]:mx-2.5 [&>i]:text-gray-400">
-                <i className="fa-solid fa-bell fa-xl"></i>
-                <i className="fa-solid fa-thumbtack fa-xl"></i>
-                <i className="fa-solid fa-user-group fa-xl"></i>
-                <i className="fas fa-inbox fa-xl"/>
-                <i className="fa-solid fa-question fa-xl"></i>
+            <div className="[&>button]:mx-2.5 [&>button]:text-gray-400 hover:[&>button]:text-gray-200">
+                <button> <i className="fa-solid fa-bell fa-xl"></i></button>
+                <button> <i className="fa-solid fa-thumbtack fa-xl"></i></button>
+                <button onClick={()=>{props.callbacks.memberList()}}> <i className="fa-solid fa-user-group fa-xl"></i></button> 
+                <button> <i className="fas fa-inbox fa-xl"/></button>
+                <button> <i className="fa-solid fa-question fa-xl"></i></button>
             </div>
         </div>
     );
