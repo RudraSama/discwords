@@ -61,13 +61,14 @@ To set up the project locally, make sure you have **Node.js** and **npm** instal
 
 ### Usage
 
-1. Start the development server:
+1. Start [Backend Server](https://github.com/RudraSama/discwords-backend)
+2. Start the development server:
 
    ```bash
    npm run dev
    ```
 
-2. Open [http://localhost:3000](http://localhost:3000) in your browser to see the app in action.
+3. Open [http://localhost:3000](http://localhost:3000) in your browser to see the app in action.
 
 ### Building for Production
 
