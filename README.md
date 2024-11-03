@@ -10,8 +10,6 @@ This project is a clone of **Discord**, built with **NextJS** for the frontend a
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
